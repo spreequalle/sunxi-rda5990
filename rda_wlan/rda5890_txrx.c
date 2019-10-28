@@ -12,7 +12,7 @@
 #include "rda5890_wid.h"
 #include "rda5890_wext.h"
 
-void rda5890_data_rx(struct rda5890_private *priv, 
+void rda5890_data_rx(struct rda5890_private *priv,
 		char *data, unsigned short data_len)
 {
 	struct sk_buff *skb;
@@ -37,7 +37,7 @@ void rda5890_data_rx(struct rda5890_private *priv,
 		"netif rx, len %d\n", skb->len);
 	RDA5890_DBGLAP(RDA5890_DA_TXRX, RDA5890_DL_TRACE,
 		"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-		skb->data[0], skb->data[1], skb->data[2], skb->data[3], 
+		skb->data[0], skb->data[1], skb->data[2], skb->data[3],
 		skb->data[skb->len - 4], skb->data[skb->len - 3],
 		skb->data[skb->len - 2], skb->data[skb->len - 1]);
 
@@ -54,7 +54,7 @@ void rda5890_data_rx(struct rda5890_private *priv,
 }
 
 
-int rda5890_host_to_card(struct rda5890_private *priv, 
+int rda5890_host_to_card(struct rda5890_private *priv,
 		char *packet, unsigned short packet_len, unsigned char packet_type)
 {
 	int ret = 0;
@@ -71,7 +71,7 @@ int rda5890_host_to_card(struct rda5890_private *priv,
 }
 
 
-int rda5890_data_tx(struct rda5890_private *priv, 
+int rda5890_data_tx(struct rda5890_private *priv,
 		struct sk_buff *skb, struct net_device *dev)
 {
 	int ret;
@@ -98,7 +98,7 @@ int rda5890_data_tx(struct rda5890_private *priv,
 		"netif tx len %d\n", pkt_len);
 	RDA5890_DBGLAP(RDA5890_DA_TXRX, RDA5890_DL_TRACE,
 		"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-		skb->data[0], skb->data[1], skb->data[2], skb->data[3], 
+		skb->data[0], skb->data[1], skb->data[2], skb->data[3],
 		skb->data[skb->len - 4], skb->data[skb->len - 3],
 		skb->data[skb->len - 2], skb->data[skb->len - 1]);
 
@@ -113,7 +113,7 @@ int rda5890_data_tx(struct rda5890_private *priv,
 	//	"sdio tx len %d\n", data_len);
 	//RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_NORM,
 	//	"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-	//	buf[0], buf[1], buf[2], buf[3], 
+	//	buf[0], buf[1], buf[2], buf[3],
 	//	buf[data_len - 4], buf[data_len - 3],
 	//	buf[data_len - 2], buf[data_len - 1]);
 
@@ -139,4 +139,3 @@ int rda5890_data_tx(struct rda5890_private *priv,
 		"%s >>> \n", __func__);
 	return ret;
 }
-

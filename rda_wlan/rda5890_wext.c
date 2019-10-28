@@ -221,12 +221,12 @@ static int rda5890_get_retry(struct net_device *dev, struct iw_request_info *inf
 	return ret;
 }
 
-/** 
- * 802.11b/g supported bitrates (in 500Kb/s units) 
+/**
+ * 802.11b/g supported bitrates (in 500Kb/s units)
  */
 u8 rda5890_bg_rates[MAX_RATES] =
-	{ 0x02, 0x04, 0x0b, 0x16, 0x0c, 0x12, 0x18, 
-	0x24, 0x30, 0x48, 0x60, 0x6c,0x00, 0x00 }; 
+	{ 0x02, 0x04, 0x0b, 0x16, 0x0c, 0x12, 0x18,
+	0x24, 0x30, 0x48, 0x60, 0x6c,0x00, 0x00 };
 
 u16 rda5890_nr_chan = 11;
 
@@ -379,8 +379,8 @@ static int rda5890_update_bss_stats(struct rda5890_private *priv)
 	int ret = 0;
 
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s >>>\n", __func__);
-	
-	memcpy(priv->curbssparams.ssid, 
+
+	memcpy(priv->curbssparams.ssid,
 		priv->assoc_ssid, sizeof(priv->curbssparams.ssid));
 
     if(priv->scan_running == 1)
@@ -429,7 +429,7 @@ static struct iw_statistics *rda5890_get_wireless_stats(struct net_device *dev)
 	priv->wstats.discard.retries = 0;
 	priv->wstats.qual.level = priv->curbssparams.rssi > 127? priv->curbssparams.rssi - 271
         :priv->curbssparams.rssi - 15;
-    
+
 	snr = priv->wstats.qual.level - RDA5890_NF_DEFAULT_SCAN_VALUE;
 	priv->wstats.qual.qual =
 		(100 * RSSI_DIFF * RSSI_DIFF - (PERFECT_RSSI - snr) *
@@ -545,7 +545,7 @@ static int rda5890_set_encode(struct net_device *dev,
 	//struct rda5890_private *priv = (struct rda5890_private *)netdev_priv(dev);
 
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s >>>\n", __func__);
-    
+
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s <<<\n", __func__);
 	return 0;
 }
@@ -926,7 +926,7 @@ static int rda5890_set_encodeext(struct net_device *dev,
 		/* Set Keys to MAC*/
 		if (ext->ext_flags & IW_ENCODE_EXT_GROUP_KEY) {
 			/* Set GTK */
-			/* 
+			/*
 			 *Always use key_id = 1 for now
 			 * need to toggle among 1, 2, 3
 			 */
@@ -954,7 +954,7 @@ static int rda5890_set_encodeext(struct net_device *dev,
 		if (ext->ext_flags & IW_ENCODE_EXT_GROUP_KEY) {
 			unsigned char tmp[8];
 			/* Set GTK */
-			/* 
+			/*
 			 * Always use key_id = 1 for now
 			 * need to toggle among 1, 2, 3
 			 */
@@ -1013,7 +1013,7 @@ static int rda5890_set_genie(struct net_device *dev,
 		rda5890_generic_set_str(priv, WID_WAPI_ASSOC_IE, extra ,ie_len);
 		goto out;
 	}
-          
+
 	if (dwrq->length > MAX_WPA_IE_LEN ||
 	    (dwrq->length && extra == NULL)) {
 		ret = -EINVAL;
@@ -1073,15 +1073,15 @@ static int rda5890_set_auth(struct net_device *dev,
 
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s >>>\n", __func__);
 
-	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 		"flags = 0x%04x, value = 0x%x\n", dwrq->flags, dwrq->value);
 
 	switch (dwrq->flags & IW_AUTH_INDEX) {
       	case IW_AUTH_CIPHER_PAIRWISE:
 #ifdef GET_SCAN_FROM_NETWORK_INFO
-        if (dwrq->value & (IW_AUTH_CIPHER_WEP104 | IW_AUTH_CIPHER_WEP40)) 
+        if (dwrq->value & (IW_AUTH_CIPHER_WEP104 | IW_AUTH_CIPHER_WEP40))
         {
-	      RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+	      RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 		    "WEP Selected \n");
 			priv->secinfo.wep_enabled = 1;
                if(dwrq->value & IW_AUTH_CIPHER_WEP104)
@@ -1090,17 +1090,17 @@ static int rda5890_set_auth(struct net_device *dev,
                   priv->secinfo.cipther_type |= IW_AUTH_CIPHER_WEP40;
 		}
 		if (dwrq->value & IW_AUTH_CIPHER_TKIP) {
-                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"IW_AUTH_CIPHER_TKIP \n");
                      priv->secinfo.cipther_type |= IW_AUTH_CIPHER_TKIP;
 		}
 		if (dwrq->value & IW_AUTH_CIPHER_CCMP) {
-                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"IW_AUTH_CIPHER_CCMP \n");
                     priv->secinfo.cipther_type |= IW_AUTH_CIPHER_CCMP;
 		}
 		if (dwrq->value & IW_AUTH_CIPHER_NONE) {
-                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+                    RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"OPEN System \n");
             priv->secinfo.cipther_type = IW_AUTH_CIPHER_NONE;
 		}
@@ -1112,12 +1112,12 @@ static int rda5890_set_auth(struct net_device *dev,
 		/*
 		 * rda5890 does not use these parameters
 		 */
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"DO NOT USE\n");
 		break;
 
 	case IW_AUTH_KEY_MGMT:
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"KEY_MGMT, val = %d\n", dwrq->value);
 		priv->secinfo.key_mgmt = dwrq->value;
 		updated = 1;
@@ -1125,21 +1125,21 @@ static int rda5890_set_auth(struct net_device *dev,
 
 	case IW_AUTH_WPA_VERSION:
 		if (dwrq->value & IW_AUTH_WPA_VERSION_DISABLED) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"WPA_VERSION, DISABLED\n");
 			priv->secinfo.WPAenabled = 0;
 			priv->secinfo.WPA2enabled = 0;
 			disable_wpa (priv);
 		}
 		if (dwrq->value & IW_AUTH_WPA_VERSION_WPA) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"WPA_VERSION, WPA\n");
 			priv->secinfo.WPAenabled = 1;
 			priv->secinfo.wep_enabled = 0;
 			priv->secinfo.auth_mode = IW_AUTH_ALG_OPEN_SYSTEM;
 		}
 		if (dwrq->value & IW_AUTH_WPA_VERSION_WPA2) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"WPA_VERSION, WPA2\n");
 			priv->secinfo.WPA2enabled = 1;
 			priv->secinfo.wep_enabled = 0;
@@ -1149,31 +1149,31 @@ static int rda5890_set_auth(struct net_device *dev,
 		break;
 
 	case IW_AUTH_80211_AUTH_ALG:
-		if (dwrq->value & IW_AUTH_ALG_SHARED_KEY || 
-            dwrq->value & IW_AUTH_ALG_OPEN_SYSTEM) 
+		if (dwrq->value & IW_AUTH_ALG_SHARED_KEY ||
+            dwrq->value & IW_AUTH_ALG_OPEN_SYSTEM)
         {
             if(dwrq->value & IW_AUTH_ALG_SHARED_KEY )
             {
-    			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+    			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
     				"80211_AUTH_ALG, SHARED_KEY\n");
     			priv->secinfo.auth_mode |= IW_AUTH_ALG_SHARED_KEY;
     		}
     		if(dwrq->value & IW_AUTH_ALG_OPEN_SYSTEM) {
-    			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+    			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
     				"80211_AUTH_ALG, OPEN\n");
     			priv->secinfo.auth_mode |= IW_AUTH_ALG_OPEN_SYSTEM;
     		}
         }
 		else if(dwrq->value & IW_AUTH_ALG_LEAP) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"80211_AUTH_ALG, LEAP\n");
 			priv->secinfo.auth_mode = IW_AUTH_ALG_LEAP;
 		}
         else if(dwrq->value & IW_AUTH_ALG_WAPI) {
 			priv->secinfo.auth_mode = IW_AUTH_ALG_WAPI;
-		}      
+		}
 		else{
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"80211_AUTH_ALG, unknown\n");
 			ret = -EINVAL;
 		}
@@ -1182,7 +1182,7 @@ static int rda5890_set_auth(struct net_device *dev,
 
 	case IW_AUTH_WPA_ENABLED:
 		if (dwrq->value) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"WPA_ENABLED, value = 0x%x\n", dwrq->value);
 			if (!priv->secinfo.WPAenabled &&
 			    !priv->secinfo.WPA2enabled) {
@@ -1192,7 +1192,7 @@ static int rda5890_set_auth(struct net_device *dev,
 				priv->secinfo.auth_mode = IW_AUTH_ALG_OPEN_SYSTEM;
 			}
 		} else {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"WPA_ENABLED, value = ZERO\n");
 			priv->secinfo.WPAenabled = 0;
 			priv->secinfo.WPA2enabled = 0;
@@ -1202,7 +1202,7 @@ static int rda5890_set_auth(struct net_device *dev,
 		break;
 
 	default:
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"NOT SUPPORT\n");
 		ret = -EOPNOTSUPP;
 		break;
@@ -1304,8 +1304,8 @@ void rda5890_indicate_disconnected(struct rda5890_private *priv)
 	wrqu.ap_addr.sa_family = ARPHRD_ETHER;
 	wireless_send_event(priv->dev, SIOCGIWAP, &wrqu, NULL);
 
-    /*report disconnect to upper layer*/
-	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_NORM, "%s >>>\n", __func__);   
+        /* report disconnect to upper layer */
+	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_NORM, "%s >>>\n", __func__);
 }
 
 void rda5890_indicate_connected(struct rda5890_private *priv)
@@ -1339,12 +1339,12 @@ void rda5890_assoc_done_worker(struct work_struct *work)
     }
 
     rda5890_get_rssi(priv, &priv->curbssparams.rssi);
-    priv->curbssparams.rssi = priv->curbssparams.rssi > 127? 
+    priv->curbssparams.rssi = priv->curbssparams.rssi > 127?
         priv->curbssparams.rssi - 271: priv->curbssparams.rssi - 15;
-    
+
     rda5990_assoc_power_save(priv);
     clear_bit(ASSOC_FLAG_ASSOC_START, &priv->assoc_flags);
-    
+
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s >>>\n", __func__);
 }
 
@@ -1374,7 +1374,7 @@ void rda5890_wlan_connect_worker(struct work_struct *work)
 /* BIT1: 1 -> SHARED KEY  */
 /* BIT3: 1 -> WPA RSN  802.1x*/
 /* BIT7: 1 -> WAPI   */
-static int assoc_helper_secinfo(struct rda5890_private *priv, 
+static int assoc_helper_secinfo(struct rda5890_private *priv,
 		struct bss_descriptor *assoc_bss)
 {
 	int ret = 0;
@@ -1385,7 +1385,7 @@ static int assoc_helper_secinfo(struct rda5890_private *priv,
 	if (   !priv->secinfo.wep_enabled
 	    && !priv->secinfo.WPAenabled
 	    && !priv->secinfo.WPA2enabled) {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%s, NO SEC\n", __func__);
 		priv->imode = 0;
 	} else {
@@ -1396,7 +1396,7 @@ static int assoc_helper_secinfo(struct rda5890_private *priv,
 		    && !priv->secinfo.WPA2enabled) {
 			/* WEP */
 			key_len = priv->wep_keys[0].len;
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"%s, WEP, len = %d\n", __func__, key_len * 8);
 			if (key_len == KEY_LEN_WEP_40) {
 				priv->imode = BIT0 | BIT1;
@@ -1415,7 +1415,7 @@ static int assoc_helper_secinfo(struct rda5890_private *priv,
 			/* WPA */
 			struct enc_key * pkey = NULL;
 
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"%s, WPA cp:%x \n", __func__, priv->secinfo.cipther_type);
 
 			if (   priv->wpa_mcast_key.len
@@ -1450,7 +1450,7 @@ static int assoc_helper_secinfo(struct rda5890_private *priv,
 				priv->imode |= BIT5;
 			else if (assoc_bss->data.dot11i_info & (BIT6))
 				priv->imode |= BIT6;
-#endif            
+#endif
 		} else {
 			RDA5890_ERRP("WEP and WPA/WPA2 enabled simutanously\n");
 			ret = -EINVAL;
@@ -1459,43 +1459,43 @@ static int assoc_helper_secinfo(struct rda5890_private *priv,
 	}
 
 	/* set authtype */
-	if (priv->secinfo.auth_mode & IW_AUTH_ALG_OPEN_SYSTEM 
+	if (priv->secinfo.auth_mode & IW_AUTH_ALG_OPEN_SYSTEM
         || priv->secinfo.auth_mode & IW_AUTH_ALG_SHARED_KEY)
     {
 
         if (priv->secinfo.auth_mode & IW_AUTH_ALG_OPEN_SYSTEM)
             {
-        		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+        		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
         			"%s, Open Auth, KEY_MGMT = %d, AUTH_ALG mode:%x\n", __func__, priv->secinfo.key_mgmt, priv->secinfo.auth_mode);
         		if (priv->secinfo.key_mgmt == 0x01) {
         			/* for 802.1x, set auth type to 0x04 */
-        			priv->authtype = BIT3;   			
+        			priv->authtype = BIT3;
         		}
-        		else 
+        		else
                 {
         			priv->authtype = BIT0;
     		    }
     	    }
-        else if(priv->secinfo.auth_mode & IW_AUTH_ALG_SHARED_KEY) 
+        else if(priv->secinfo.auth_mode & IW_AUTH_ALG_SHARED_KEY)
     	    {
-        		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+        		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
         			"%s, Shared-Key Auth AUTH_ALG mode:%x \n", __func__, priv->secinfo.auth_mode);
         		priv->authtype = BIT1;
         	}
     }
     else if (priv->secinfo.auth_mode == IW_AUTH_ALG_WAPI) {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%s, Shared-Key Auth\n", __func__);
 		priv->authtype = IW_AUTH_ALG_WAPI;
 	}
 	else if (priv->secinfo.auth_mode == IW_AUTH_ALG_LEAP) {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%s, LEAP Auth, not supported\n", __func__);
 		ret = -EINVAL;
 		goto out;
 	}
 	else {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%s, Unknown Auth\n", __func__);
 		ret = -EINVAL;
 		goto out;
@@ -1517,7 +1517,7 @@ static struct bss_descriptor *get_bss_desc_from_scanlist(
         if (strcmp(iter_bss->ssid, ssid) == 0) {
 #else
 		if (strcmp(iter_bss->data.ssid, ssid) == 0) {
-#endif            
+#endif
 			ret_bss = iter_bss;
 			break;
 		}
@@ -1546,21 +1546,21 @@ void rda5890_assoc_worker(struct work_struct *work)
 	if(assoc_bss->rssi > 200)
 	{
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "assoc_bss rssi =%d > 200\n", assoc_bss->rssi);
-	    rda5890_rssi_up_to_200(priv);	
+	    rda5890_rssi_up_to_200(priv);
 	}
 #else
 	if(assoc_bss->data.rssi > 200)
 	{
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "assoc_bss rssi =%d > 200\n", assoc_bss->data.rssi);
-	    rda5890_rssi_up_to_200(priv);	
+	    rda5890_rssi_up_to_200(priv);
 	}
-#endif    
+#endif
 #ifdef GET_SCAN_FROM_NETWORK_INFO
-    priv->curbssparams.channel = assoc_bss->channel; 
+    priv->curbssparams.channel = assoc_bss->channel;
     memcpy(priv->curbssparams.bssid, assoc_bss->bssid, ETH_ALEN);
     memcpy(priv->curbssparams.ssid, assoc_bss->ssid,IW_ESSID_MAX_SIZE + 1);
 #else
-    priv->curbssparams.channel = assoc_bss->data.channel; 
+    priv->curbssparams.channel = assoc_bss->data.channel;
     memcpy(priv->curbssparams.bssid, assoc_bss->data.bssid, ETH_ALEN);
     memcpy(priv->curbssparams.ssid, assoc_bss->data.ssid,IW_ESSID_MAX_SIZE + 1);
 #endif
@@ -1574,11 +1574,11 @@ void rda5890_assoc_worker(struct work_struct *work)
     if((old_imode == priv->imode) && !memcmp(old_bssid, priv->assoc_bssid,6))
     {
         //WEP THE Second retry should change to shared key
-        if((old_imode == 3 || old_imode ==  5) && assoc_count%2)  
+        if((old_imode == 3 || old_imode ==  5) && assoc_count%2)
         {
             priv->authtype = BIT1;
         }
-        assoc_count ++;        
+        assoc_count ++;
     }
     else
     {
@@ -1588,7 +1588,7 @@ void rda5890_assoc_worker(struct work_struct *work)
         assoc_count = 0;
     }
 
-    set_bit(ASSOC_FLAG_ASSOC_START ,&priv->assoc_flags);    
+    set_bit(ASSOC_FLAG_ASSOC_START ,&priv->assoc_flags);
     set_bit(ASSOC_FLAG_ASSOC_RETRY, &priv->assoc_flags);
 
     if((priv->imode == 3) || (priv->imode ==5))
@@ -1609,18 +1609,18 @@ void rda5890_assoc_worker(struct work_struct *work)
                 old_imode = 0xff;
             }
         }
-    
+
     ret = rda5890_start_join(priv);
 	if (ret) {
 		RDA5890_ERRP("rda5890_set_ssid fail, ret = %d\n", ret);
 		goto out;
 	}
-  
+
     if(test_bit(ASSOC_FLAG_ASSOC_RETRY, &priv->assoc_flags))
-    {       
+    {
         queue_delayed_work(priv->work_thread, &priv->assoc_work, 3*HZ);
     }
-    
+
 out:
 	RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, "%s <<< \n", __func__);
 }
@@ -1641,7 +1641,7 @@ static int rda5890_set_essid(struct net_device *dev, struct iw_request_info *inf
 		ret = -E2BIG;
 		goto out;
 	}
-    
+
 	memset(&ssid, 0, sizeof(ssid));
 
 	if (!dwrq->flags || !in_ssid_len) {
@@ -1654,10 +1654,10 @@ static int rda5890_set_essid(struct net_device *dev, struct iw_request_info *inf
 	}
 
 	if (!ssid_len) {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"requested any SSID\n");
 	} else {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"requested SSID len = %d ssid:%s\n",
 			ssid_len, ssid);
 	}
@@ -1719,11 +1719,11 @@ static int rda5890_set_wap(struct net_device *dev, struct iw_request_info *info,
         disable_wep( priv);
         disable_wpa(priv);
     }
-        
 
-	RDA5890_ERRP("%s <<< \n connect mac: %2x:%2x:%2x:%2x:%2x:%2x \n", __func__, 
+
+	RDA5890_ERRP("%s <<< \n connect mac: %2x:%2x:%2x:%2x:%2x:%2x \n", __func__,
          ap_addr[0],ap_addr[1],ap_addr[2],ap_addr[3],ap_addr[4],ap_addr[5]);
-    
+
 	return 0;
 }
 
@@ -1824,11 +1824,11 @@ static inline char *translate_scan(struct rda5890_private *priv,
 			"translate_scan, wpa_ie, len %d\n", bss_desc->wpa_ie_len);
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-			bss_desc->wpa_ie[0], bss_desc->wpa_ie[1], 
-			bss_desc->wpa_ie[2], bss_desc->wpa_ie[3], 
-			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 4], 
+			bss_desc->wpa_ie[0], bss_desc->wpa_ie[1],
+			bss_desc->wpa_ie[2], bss_desc->wpa_ie[3],
+			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 4],
 			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 3],
-			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 2], 
+			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 2],
 			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 1]);
 
 		memcpy(buf, bss_desc->wpa_ie, bss_desc->wpa_ie_len);
@@ -1845,11 +1845,11 @@ static inline char *translate_scan(struct rda5890_private *priv,
 			"translate_scan, rsn_ie, len %d\n", bss_desc->rsn_ie_len);
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-			bss_desc->rsn_ie[0], bss_desc->rsn_ie[1], 
-			bss_desc->rsn_ie[2], bss_desc->rsn_ie[3], 
-			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 4], 
+			bss_desc->rsn_ie[0], bss_desc->rsn_ie[1],
+			bss_desc->rsn_ie[2], bss_desc->rsn_ie[3],
+			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 4],
 			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 3],
-			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 2], 
+			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 2],
 			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 1]);
 
 		memcpy(buf, bss_desc->rsn_ie, bss_desc->rsn_ie_len);
@@ -1923,11 +1923,11 @@ static inline char *translate_scan(struct rda5890_private *priv,
 			"translate_scan, wpa_ie, len %d\n", bss_desc->wpa_ie_len);
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-			bss_desc->wpa_ie[0], bss_desc->wpa_ie[1], 
-			bss_desc->wpa_ie[2], bss_desc->wpa_ie[3], 
-			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 4], 
+			bss_desc->wpa_ie[0], bss_desc->wpa_ie[1],
+			bss_desc->wpa_ie[2], bss_desc->wpa_ie[3],
+			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 4],
 			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 3],
-			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 2], 
+			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 2],
 			bss_desc->wpa_ie[bss_desc->wpa_ie_len - 1]);
 
 		memcpy(buf, bss->wpa_ie, bss->wpa_ie_len);
@@ -1944,11 +1944,11 @@ static inline char *translate_scan(struct rda5890_private *priv,
 			"translate_scan, rsn_ie, len %d\n", bss_desc->rsn_ie_len);
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-			bss_desc->rsn_ie[0], bss_desc->rsn_ie[1], 
-			bss_desc->rsn_ie[2], bss_desc->rsn_ie[3], 
-			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 4], 
+			bss_desc->rsn_ie[0], bss_desc->rsn_ie[1],
+			bss_desc->rsn_ie[2], bss_desc->rsn_ie[3],
+			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 4],
 			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 3],
-			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 2], 
+			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 2],
 			bss_desc->rsn_ie[bss_desc->rsn_ie_len - 1]);
 
 		memcpy(buf, bss->rsn_ie, bss->rsn_ie_len);
@@ -1965,11 +1965,11 @@ static inline char *translate_scan(struct rda5890_private *priv,
 			"translate_scan, wapi_len %d\n", bss_desc->wapi_ie_len);
 		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"%02x %02x %02x %02x ... ... %02x %02x %02x %02x\n",
-			bss_desc->wapi_ie[0], bss_desc->wapi_ie[1], 
-			bss_desc->wapi_ie[2], bss_desc->wapi_ie[3], 
-			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 4], 
+			bss_desc->wapi_ie[0], bss_desc->wapi_ie[1],
+			bss_desc->wapi_ie[2], bss_desc->wapi_ie[3],
+			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 4],
 			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 3],
-			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 2], 
+			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 2],
 			bss_desc->wapi_ie[bss_desc->wapi_ie_len - 1]);
 
 		memcpy(buf, bss->wapi_ie, bss->wapi_ie_len);
@@ -2015,8 +2015,8 @@ static void dump_bss_desc(struct rda5890_bss_descriptor *bss_desc)
 	RDA5890_DBGP("bss_type = %d\n", bss_desc->bss_type);
 	RDA5890_DBGP("channel = %d\n", bss_desc->channel);
 	RDA5890_DBGP("dot11i_info = 0x%02x\n", bss_desc->dot11i_info);
-	RDA5890_DBGP("bssid = %02x:%02x:%02x:%02x:%02x:%02x\n", 
-		bss_desc->bssid[0], bss_desc->bssid[1], bss_desc->bssid[2], 
+	RDA5890_DBGP("bssid = %02x:%02x:%02x:%02x:%02x:%02x\n",
+		bss_desc->bssid[0], bss_desc->bssid[1], bss_desc->bssid[2],
 		bss_desc->bssid[3], bss_desc->bssid[4], bss_desc->bssid[5]);
 	RDA5890_DBGP("rssi = %d\n", (char)bss_desc->rssi);
 	RDA5890_DBGP("auth_info = 0x%02x\n", bss_desc->auth_info);
@@ -2199,7 +2199,7 @@ static void fill_rsn_wpa_ie(unsigned char *data, unsigned char ie_type,
 }
 
 /* reconstruct wpa/rsn ie from the dot11i_info and auth_info fields */
-/* TODO: 
+/* TODO:
  * assuming RSN and WPA are using same cipher suite, no space to store each
  * assuming grp and unicast are using same cipher suite
  */
@@ -2207,22 +2207,22 @@ static void reconstruct_rsn_wpa_ie(struct bss_descriptor *bss_desc)
 {
 	bss_desc->wpa_ie_len = 0;
 	bss_desc->rsn_ie_len = 0;
-	
+
 	if (bss_desc->data.dot11i_info & BIT0) {
 		if (bss_desc->data.dot11i_info & BIT3) {
 			/* WPA IE present */
-			fill_rsn_wpa_ie(&bss_desc->wpa_ie[0], IWPAELEMENT, 
+			fill_rsn_wpa_ie(&bss_desc->wpa_ie[0], IWPAELEMENT,
 				&bss_desc->data, &bss_desc->wpa_ie_len);
 		}
 
 		if (bss_desc->data.dot11i_info & BIT4) {
 			/* RSN IE present */
-			fill_rsn_wpa_ie(&bss_desc->rsn_ie[0], IRSNELEMENT, 
-				&bss_desc->data, &bss_desc->rsn_ie_len);			
+			fill_rsn_wpa_ie(&bss_desc->rsn_ie[0], IRSNELEMENT,
+				&bss_desc->data, &bss_desc->rsn_ie_len);
 		}
 	}
 	else {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"form_rsn_ie, NO SEC\n");
 	}
 }
@@ -2249,12 +2249,12 @@ void rda5890_scan_worker(struct work_struct *work)
     }
 
 	priv->scan_running = 1;
-    
+
 #ifdef GET_SCAN_FROM_NETWORK_INFO
 	ret = rda5890_start_scan_enable_network_info(priv);
 #else
     ret = rda5890_start_scan(priv);
-#endif 
+#endif
 	if (ret) {
 		RDA5890_ERRP("rda5890_start_scan fail, ret = %d\n", ret);
 		goto out;
@@ -2303,27 +2303,27 @@ retry:
 		}
 
 		if (found) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND SAME %s, update\n", found->data.ssid);
 			/* found, clear it */
 			clear_bss_descriptor(found);
 		} else if (!list_empty(&priv->network_free_list)) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND NEW %s, add\n", new.data.ssid);
 			/* Pull one from the free list */
 			found = list_entry(priv->network_free_list.next,
 					   struct bss_descriptor, list);
 			list_move_tail(&found->list, &priv->network_list);
 		} else if (oldest) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
-				"FOUND NEW %s, no space, replace oldest %s\n", 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
+				"FOUND NEW %s, no space, replace oldest %s\n",
 				new.data.ssid, oldest->data.ssid);
 			/* If there are no more slots, expire the oldest */
 			found = oldest;
 			clear_bss_descriptor(found);
 			list_move_tail(&found->list, &priv->network_list);
 		} else {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND NEW but no space to store\n");
 		}
 
@@ -2401,7 +2401,7 @@ int rda5890_get_scan(struct net_device *dev, struct iw_request_info *info,
 
 	/* iwlist should wait until the current scan is finished */
 	if (priv->scan_running) {
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"Scan is Running, return AGAIN\n");
 		return -EAGAIN;
 	}
@@ -2420,11 +2420,11 @@ int rda5890_get_scan(struct net_device *dev, struct iw_request_info *info,
 		stale_time = iter_bss->last_scanned + DEFAULT_MAX_SCAN_AGE;
 		if (time_after(jiffies, stale_time)) {
 			list_move_tail(&iter_bss->list, &priv->network_free_list);
-#ifdef GET_SCAN_FROM_NETWORK_INFO              
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+#ifdef GET_SCAN_FROM_NETWORK_INFO
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"Prune Old Bss %s\n", iter_bss->ssid);
 #else
-            RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+            RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"Prune Old Bss %s\n", iter_bss->ssid);
 #endif
 			clear_bss_descriptor(iter_bss);
@@ -2433,11 +2433,11 @@ int rda5890_get_scan(struct net_device *dev, struct iw_request_info *info,
 
 		/* Translate to WE format this entry */
 		next_ev = translate_scan(priv, info, ev, stop, iter_bss);
-#ifdef GET_SCAN_FROM_NETWORK_INFO        
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+#ifdef GET_SCAN_FROM_NETWORK_INFO
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"Report BSS %s\n", iter_bss->ssid);
 #else
-        RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+        RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
             "Report BSS %s\n", iter_bss->data.ssid);
 #endif
 		if (next_ev == NULL)
@@ -2463,7 +2463,7 @@ int rda5890_set_mlme(struct net_device *dev,
 
 	switch (mlme->cmd) {
 	case IW_MLME_DEAUTH:
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"DEAUTH\n");
 		/* silently ignore */
 		break;
@@ -2472,14 +2472,14 @@ int rda5890_set_mlme(struct net_device *dev,
 	{
 		unsigned char ssid[6];
 		memset(ssid, 0, 6);
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"DISASSOC\n");
 		/* silently ignore */
 		rda5890_set_ssid((struct rda5890_private *)netdev_priv(dev) , ssid, 6);
 	}
 		break;
 	default:
-		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+		RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 			"Not supported cmd %d\n", mlme->cmd);
 		ret = -EOPNOTSUPP;
 	}
@@ -2554,4 +2554,3 @@ struct iw_handler_def rda5890_wext_handler_def = {
 	.standard	= (iw_handler *) rda5890_wext_handler,
 	.get_wireless_stats = rda5890_get_wireless_stats,
 };
-

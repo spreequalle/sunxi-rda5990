@@ -200,18 +200,18 @@ typedef enum {
 			WID_MAX                            = 0xFFFF
 } WID_T;
 
-int rda5890_wid_request(struct rda5890_private *priv, 
+int rda5890_wid_request(struct rda5890_private *priv,
 		char *wid_req, unsigned short wid_req_len,
 		char *wid_rsp, unsigned short *wid_rsp_len);
 
-void rda5890_wid_response(struct rda5890_private *priv, 
+void rda5890_wid_response(struct rda5890_private *priv,
 		char *wid_rsp, unsigned short wid_rsp_len);
 
-void rda5890_wid_status(struct rda5890_private *priv, 
+void rda5890_wid_status(struct rda5890_private *priv,
 		char *wid_status, unsigned short wid_status_len);
 
 
-void rda5890_card_to_host(struct rda5890_private *priv, 
+void rda5890_card_to_host(struct rda5890_private *priv,
 		char *packet, unsigned short packet_len);
 
 int rda5890_start_scan(struct rda5890_private *priv);
@@ -220,7 +220,7 @@ int rda5890_start_join(struct rda5890_private *priv);
 
 int rda5890_get_fw_ver(struct rda5890_private *priv, unsigned long *fw_ver);
 int rda5890_get_mac_addr(struct rda5890_private *priv, unsigned char *mac_addr);
-int rda5890_get_scan_results(struct rda5890_private *priv, 
+int rda5890_get_scan_results(struct rda5890_private *priv,
 		struct rda5890_bss_descriptor *bss_desc);
 int rda5890_get_bssid(struct rda5890_private *priv, unsigned char *bssid);
 int rda5890_set_bssid(struct rda5890_private *priv, unsigned char *bssid);
@@ -231,17 +231,17 @@ int rda5890_get_rssi(struct rda5890_private *priv, unsigned char *rssi);
 int rda5890_set_mac_addr(struct rda5890_private *priv, unsigned char *mac_addr);
 int rda5890_set_preamble(struct rda5890_private *priv, unsigned char  preamble);
 
-int rda5890_set_ssid(struct rda5890_private *priv, 
+int rda5890_set_ssid(struct rda5890_private *priv,
 		unsigned char *ssid, unsigned char ssid_len);
-int rda5890_get_ssid(struct rda5890_private *priv, 
+int rda5890_get_ssid(struct rda5890_private *priv,
 		unsigned char *ssid, unsigned char *ssid_len);
 int rda5890_set_imode(struct rda5890_private *priv, unsigned char imode);
 int rda5890_set_authtype(struct rda5890_private *priv, unsigned char authtype);
 int rda5890_set_listen_interval(struct rda5890_private *priv, unsigned char interval);
 int rda5890_set_link_loss_threshold(struct rda5890_private *priv, unsigned char threshold);
-int rda5890_set_wepkey(struct rda5890_private *priv, 
+int rda5890_set_wepkey(struct rda5890_private *priv,
 		unsigned short index, unsigned char *key, unsigned char key_len);
-int rda5890_set_ptk(struct rda5890_private *priv, 
+int rda5890_set_ptk(struct rda5890_private *priv,
 		unsigned char *key, unsigned char key_len);
 int rda5890_set_gtk(struct rda5890_private *priv, unsigned char key_id,
 		unsigned char *key_rsc, unsigned char key_rsc_len,
@@ -250,16 +250,16 @@ int rda5890_set_gtk(struct rda5890_private *priv, unsigned char key_id,
 int rda5890_set_pm_mode(struct rda5890_private *priv, unsigned char pm_mode);
 int rda5890_set_preasso_sleep(struct rda5890_private *priv, unsigned int preasso_sleep);
 
-int rda5890_generic_get_str(struct rda5890_private *priv, 
+int rda5890_generic_get_str(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val, unsigned char len);
-int rda5890_generic_set_str(struct rda5890_private *priv, 
+int rda5890_generic_set_str(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val, unsigned char len);
 
 int rda5890_generic_set_uchar(struct rda5890_private *priv,
                 unsigned short wid, unsigned char val);
-int rda5890_generic_get_ushort(struct rda5890_private *priv, 
+int rda5890_generic_get_ushort(struct rda5890_private *priv,
 		unsigned short wid, unsigned short *val);
-int rda5890_generic_set_ushort(struct rda5890_private *priv, 
+int rda5890_generic_set_ushort(struct rda5890_private *priv,
 		unsigned short wid, unsigned short val);
 
 int rda5890_generic_set_ulong(struct rda5890_private *priv,
@@ -278,11 +278,10 @@ int rda5890_set_txrate(struct rda5890_private *priv, unsigned char mbps);
 
 int rda5890_set_scan_complete(struct rda5890_private *priv);
 #endif
-int rda5890_wid_request_polling(struct rda5890_private *priv, 
+int rda5890_wid_request_polling(struct rda5890_private *priv,
 		char *wid_req, unsigned short wid_req_len,
 		char *wid_rsp, unsigned short *wid_rsp_len);
 int rda5890_check_wid_response(char *wid_rsp, unsigned short wid_rsp_len,
 		unsigned short wid, char wid_msg_id, 
 		char payload_len, char **ptr_payload);
 #endif
-

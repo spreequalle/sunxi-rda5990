@@ -55,24 +55,24 @@ static u8 isBigEnded = 0;
 
 static u8 wifi_in_test_mode = 0;
 
-const u32 wifi_core_init_data[][2] = 
+const u32 wifi_core_init_data[][2] =
 {
 
 };
 
-u16 wifi_off_data[][2] = 
+u16 wifi_off_data[][2] =
 {
 	{ 0x3F, 0x0001 }, //page up
 	{ 0x31, 0x0B40 }, //power off wifi
 	{ 0x3F, 0x0000 }, //page down
 };
 
-u16 wifi_en_data[][2] = 
+u16 wifi_en_data[][2] =
 {
     //item:VerD_wf_on_2012_02_08
     {0x3f, 0x0001},
 #ifdef RDA5990_USE_DCDC     /*houzhen update Mar 15 2012 */
-    {0x23, 0x8FA1},//20111001 higher AVDD voltage to improve EVM to 0x8f21 download current -1db 0x8fA1>>0x8bA1   
+    {0x23, 0x8FA1},//20111001 higher AVDD voltage to improve EVM to 0x8f21 download current -1db 0x8fA1>>0x8bA1
 #else
 	{0x23, 0x0FA1},
 #endif
@@ -80,10 +80,10 @@ u16 wifi_en_data[][2] =
 //    {0x22, 0xD3C7},//for ver.c 20111109, txswitch
     {0x24, 0x80C8},//freq_osc_in[1:0]00  0x80C8 >> 0x80CB
     {0x27, 0x4925},//for ver.c20111109, txswitch
-    //                {0x28, 0x80A1}, //BT_enable 
-    {0x31, 0x8140},//enable wifi  
-    {0x32, 0x0113},//set_ rdenout_ldooff_wf=0; rden4in_ldoon_wf=1						
-    //                {0x39, 0x0004}, 	//uart switch to wf  
+    //                {0x28, 0x80A1}, //BT_enable
+    {0x31, 0x8140},//enable wifi
+    {0x32, 0x0113},//set_ rdenout_ldooff_wf=0; rden4in_ldoon_wf=1
+    //                {0x39, 0x0004}, 	//uart switch to wf
     {0x3F, 0x0000}, //page down
 };
 
@@ -105,7 +105,7 @@ u16 wifi_dig_reset_data[][2]=
 	{0x3F,  0x0000},
 };
 
-u16 wifi_rf_init_data_verE[][2] = 
+u16 wifi_rf_init_data_verE[][2] =
 {
 	{0x3f, 0x0000},
 	//{;;set_rf_swi},ch
@@ -136,7 +136,7 @@ u16 wifi_rf_init_data_verE[][2] =
 	{0x22, 0x24DC},
 	{0x23, 0x23FF},
 	{0x24, 0x00FC},
-	{0x26, 0x004F},//004F >> 005f premote pa 
+	{0x26, 0x004F},//004F >> 005f premote pa
 	{0x27, 0x171D},///mdll*7
 	{0x28, 0x031D},///mdll*7
 	{0x2A, 0x2860},//et0x2849-8.5p  :yd 0x2861-7pf C1,C2=6.8p
@@ -154,7 +154,7 @@ u16 wifi_rf_init_data_verE[][2] =
 	{0x3D, 0x2c02}, //3C01;//gain_0
 	{0x33, 0x1502},//liuyanan
 	//{;;SET_channe},_to_11
-	{0x1B, 0x0001},//set_channel   
+	{0x1B, 0x0001},//set_channel
 	{0x30, 0x024D},
 	{0x29, 0xD468},
 	{0x29, 0x1468},
@@ -162,7 +162,7 @@ u16 wifi_rf_init_data_verE[][2] =
 	{0x3f, 0x0000},
 };
 
-u16 wifi_rf_init_data[][2] = 
+u16 wifi_rf_init_data[][2] =
 {
 	{0x3f, 0x0000},
 	//{;;set_rf_swi},ch
@@ -193,7 +193,7 @@ u16 wifi_rf_init_data[][2] =
 	{0x22, 0x24DC},
 	{0x23, 0x23FF},
 	{0x24, 0x00FC},
-	{0x26, 0x004F},//004F >> 005f premote pa 
+	{0x26, 0x004F},//004F >> 005f premote pa
 	{0x27, 0x171D},///mdll*7
 	{0x28, 0x031D},///mdll*7
 	{0x2A, 0x2860},//et0x2849-8.5p  :yd 0x2861-7pf C1,C2=6.8p
@@ -211,7 +211,7 @@ u16 wifi_rf_init_data[][2] =
 	{0x3D, 0x2c02}, //3C01;//gain_0
 	{0x33, 0x1502},//liuyanan
 	//{;;SET_channe},_to_11
-	{0x1B, 0x0001},//set_channel   
+	{0x1B, 0x0001},//set_channel
 	{0x30, 0x024D},
 	{0x29, 0xD468},
 	{0x29, 0x1468},
@@ -219,10 +219,10 @@ u16 wifi_rf_init_data[][2] =
 	{0x3f, 0x0000},
 };
 
-u16 wifi_uart_debug_data[][2] = 
+u16 wifi_uart_debug_data[][2] =
 {
   {0x3F,0x0001},
-  {0x28,0x80A1}, //BT_enable 
+  {0x28,0x80A1}, //BT_enable
   {0x39,0x0004}, //uart switch to wf
   {0x3f,0x0000},
 };
@@ -231,74 +231,74 @@ u16 wifi_tm_en_data[][2] =
 {
     {0x3F,0x0001},
 #ifdef RDA5990_USE_DCDC     /*houzhen update Mar 15 2012 */
-    {0x23, 0x8FA1},//20111001 higher AVDD voltage to improve EVM to 0x8f21 download current -1db 0x8fA1>>0x8bA1   
+    {0x23, 0x8FA1},//20111001 higher AVDD voltage to improve EVM to 0x8f21 download current -1db 0x8fA1>>0x8bA1
 #else
 	{0x23, 0x0FA1},
 #endif
     {0x22,0xD3C7},//for ver.c 20111109, tx
-	{0x24, 0x80C8},//freq_osc_in[1:0]00  0x80C8 >> 0x80CB 
+	{0x24, 0x80C8},//freq_osc_in[1:0]00  0x80C8 >> 0x80CB
 	{0x27,0x4925},//for ver.c20111109, txs
-	{0x28,0x80A1}, //BT_enable            
-	{0x29,0x111F},                        
-	{0x31,0x8140},                        
+	{0x28,0x80A1}, //BT_enable
+	{0x29,0x111F},
+	{0x31,0x8140},
 	{0x32,0x0113},//set_ rdenout_ldooff_wf
 	{0x39,0x0004},//uart switch to wf
 	{0x3f,0x0000},
 };
 
-u16 wifi_tm_rf_init_data[][2] = 
+u16 wifi_tm_rf_init_data[][2] =
 {
 	{0x3f, 0x0000},
-	//set_rf_switch                                                  
-	{0x06,0x0101},                                                     
-	{0x07,0x0101},                                                     
-	{0x08,0x0101},                                                     
-	{0x09,0x0101},                                                     
+	//set_rf_switch
+	{0x06,0x0101},
+	{0x07,0x0101},
+	{0x08,0x0101},
+	{0x09,0x0101},
 	{0x0A,0x002C},//aain_0
-	{0x0D,0x0507},                                             
-	{0x0E,0x2300},//2012_02_20                                         
-	{0x0F,0x5689},//                                                   
-	//set_RF                                                            
-	{0x10,0x0f78},//20110824                                             
-	{0x11,0x0602},                                                     
-	{0x13,0x0652},//adc_tuning_bit[011]                               
-	{0x14,0x8886},                                                     
-	{0x15,0x0990},                                                     
-	{0x16,0x049f},                                                     
-	{0x17,0x0990},                                                     
-	{0x18,0x049F},                                                     
-	{0x19,0x3C01},//sdm_vbit[3:0]=1111                                 
-	{0x1C,0x0934},                                                     
-	{0x1D,0xCE00},//for ver.D20120119for temperature 70 degree         
+	{0x0D,0x0507},
+	{0x0E,0x2300},//2012_02_20
+	{0x0F,0x5689},//
+	//set_RF
+	{0x10,0x0f78},//20110824
+	{0x11,0x0602},
+	{0x13,0x0652},//adc_tuning_bit[011]
+	{0x14,0x8886},
+	{0x15,0x0990},
+	{0x16,0x049f},
+	{0x17,0x0990},
+	{0x18,0x049F},
+	{0x19,0x3C01},//sdm_vbit[3:0]=1111
+	{0x1C,0x0934},
+	{0x1D,0xCE00},//for ver.D20120119for temperature 70 degree
 	{0x1F,0x0300},//div2_band_48g_dr=1;div2_band_48g_reg[8:0]1000000000
-	{0x20,0x06E4},                                                     
-	{0x21,0x0ACF},//for ver.c20111109,dr dac reset,dr txflt reset      
-	{0x22,0x24DC},                                                     
-	{0x23,0x23FF},                                                     
-	{0x24,0x00FC},                                                     
-	{0x26,0x004F},                                                     
-	{0x27,0x171D},///mdll*7                                            
-	{0x28,0x031D},///mdll*7                                            
-	{0x2A,0x2860},                                                     
-	{0x2B,0x0800},//bbpll,or ver.c20111116                             
-	{0x32,0x8a08},                                                     
-	{0x33,0x1D02},//liuyanan                                           
-	//agc_gain                                                          
-	{0x36,0x02f4}, //00F8;//gain_7                                     
-	{0x37,0x01f4}, //0074;//aain_6                                     
-	{0x38,0x21d4}, //0014;//gain_5                                     
-	{0x39,0x25d4}, //0414;//aain_4                                     
-	{0x3A,0x2584}, //1804;//gain_3                                     
-	{0x3B,0x2dc4}, //1C04;//aain_2                                     
-	{0x3C,0x2d04}, //1C02;//gain_1                                     
-	{0x3D,0x2c02}, //3C01;//gain_0                                     
-	//DC_CAL                                                            
-	{0x30,0x0248},                                                     
-	{0x30,0x0249},                                                     
-	//wait 200ms;                                                       
-	{0x33,0x1502},//liuyanan                                           
-	//SET_channel_to_11                                                 
-	{0x1B,0x0001},//set_channel     
+	{0x20,0x06E4},
+	{0x21,0x0ACF},//for ver.c20111109,dr dac reset,dr txflt reset
+	{0x22,0x24DC},
+	{0x23,0x23FF},
+	{0x24,0x00FC},
+	{0x26,0x004F},
+	{0x27,0x171D},///mdll*7
+	{0x28,0x031D},///mdll*7
+	{0x2A,0x2860},
+	{0x2B,0x0800},//bbpll,or ver.c20111116
+	{0x32,0x8a08},
+	{0x33,0x1D02},//liuyanan
+	//agc_gain
+	{0x36,0x02f4}, //00F8;//gain_7
+	{0x37,0x01f4}, //0074;//aain_6
+	{0x38,0x21d4}, //0014;//gain_5
+	{0x39,0x25d4}, //0414;//aain_4
+	{0x3A,0x2584}, //1804;//gain_3
+	{0x3B,0x2dc4}, //1C04;//aain_2
+	{0x3C,0x2d04}, //1C02;//gain_1
+	{0x3D,0x2c02}, //3C01;//gain_0
+	//DC_CAL
+	{0x30,0x0248},
+	{0x30,0x0249},
+	//wait 200ms;
+	{0x33,0x1502},//liuyanan
+	//SET_channel_to_11
+	{0x1B,0x0001},//set_channel
 	{0x3f,0x0000},
 };
 
@@ -322,7 +322,7 @@ static int rda5990_wf_setup_A2_power(int enable)
 		printk("***0xA2 readback value:0x%X \n", temp_data);
 
 		temp_data |=0x0200;   /*en reg4_pa bit*/
-#ifdef RDA5890_USE_CRYSTAL	
+#ifdef RDA5890_USE_CRYSTAL
 		temp_data &= ~(1 << 14); //disable xen_out
 #endif
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, 0x22, temp_data);
@@ -340,7 +340,7 @@ static int rda5990_wf_setup_A2_power(int enable)
 		ret = rda_gpio_i2c_read_1_addr_2_data(RDA_WIFI_RF_ADDR, 0x28, &temp_data);
 		if(ret)
 			goto err;
-		if(temp_data&0x8000)        // bt is on 
+		if(temp_data&0x8000)        // bt is on
 		{
 			goto out;
 		}
@@ -439,7 +439,7 @@ int rda_wifi_en(void)
 	unsigned int count = 0;
 	int ret = 0;
 
-    mutex_lock(&i2c_rw_lock); 
+    mutex_lock(&i2c_rw_lock);
 	for(count = 0; count < sizeof(wifi_en_data)/sizeof(wifi_en_data[0]); count ++)
 	{
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, wifi_en_data[count][0], wifi_en_data[count][1]);
@@ -469,8 +469,8 @@ int rda_wifi_debug_en(void)
 {
     unsigned int count = 0;
     int ret = 0;
-    
-    mutex_lock(&i2c_rw_lock); 
+
+    mutex_lock(&i2c_rw_lock);
 		for(count = 0; count < sizeof(wifi_uart_debug_data)/sizeof(wifi_uart_debug_data[0]); count ++)
 		{
 	      ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, wifi_uart_debug_data[count][0], wifi_uart_debug_data[count][1]);
@@ -501,7 +501,7 @@ int rda_tm_wifi_en(void)
     ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, 0x3f, 0x0001); //PAGE UP
     if(ret)
         goto err;
- 
+
     ret = rda_gpio_i2c_read_1_addr_2_data(RDA_WIFI_RF_ADDR,0x21,&temp_data);
     if(ret)
         goto err;
@@ -563,7 +563,7 @@ int rda_wifi_dig_reset(void)
 	return 0;
 err:
     mutex_unlock(&i2c_rw_lock);
-	printk(KERN_INFO "***rda_wifi_dig_reset failed! \n"); 
+	printk(KERN_INFO "***rda_wifi_dig_reset failed! \n");
 	return -1;
 }
 
@@ -637,15 +637,15 @@ _retry:
 
 	if(!wifi_in_test_mode)
 	{
-		ret = rda_wifi_en();	
+		ret = rda_wifi_en();
 		if(ret < 0)
 			goto err;
 
-		ret = rda_wifi_rf_init();	
+		ret = rda_wifi_rf_init();
 		if(ret < 0)
 			goto err;
 
-		ret = rda_wifi_dc_cal();	
+		ret = rda_wifi_dc_cal();
 		if(ret < 0)
 			goto err;
 
@@ -673,7 +673,7 @@ _retry:
 err:
 	printk(KERN_INFO "rda_wifi_power_on_failed retry:%d \n", retry);
 	if(retry -- > 0)
-	{   
+	{
 		rda_wifi_power_off();
 		goto _retry;
 	}
@@ -744,7 +744,7 @@ int rda_fm_power_off(void)
 }
 
 
-u16 rda_5990_bt_off_data[][2] = 
+u16 rda_5990_bt_off_data[][2] =
 {
 	{0x3f, 0x0001 }, //pageup
 	{0x28, 0x00A1 }, //power off bt
@@ -752,19 +752,19 @@ u16 rda_5990_bt_off_data[][2] =
 };
 
 /*houzhen update 2012 03 06*/
-u16 rda_5990_bt_en_data[][2] = 
+u16 rda_5990_bt_en_data[][2] =
 {
     {0x3f, 0x0001 },      	//pageup
-#ifdef RDA5990_USE_DCDC    
+#ifdef RDA5990_USE_DCDC
     {0x23, 0x8FA1},		  // //20111001 higher AVDD voltage to improve EVM
 #else
 	{0x23, 0x0FA1},
-#endif 
-	{0x24, 0x80C8},		  // ;//freq_osc_in[1:0]00	
+#endif
+	{0x24, 0x80C8},		  // ;//freq_osc_in[1:0]00
 	{0x26, 0x47A5},		  //  reg_vbit_normal_bt[2:0] =111
 	{0x27, 0x4925},		  // //for ver.c20111109, txswitch
-	{0x29, 0x111F},		  // // rden4in_ldoon_bt=1	
-	{0x32, 0x0111},		  // set_ rdenout_ldooff_wf=0;						 
+	{0x29, 0x111F},		  // // rden4in_ldoon_bt=1
+	{0x32, 0x0111},		  // set_ rdenout_ldooff_wf=0;
 	{0x39, 0x0000},		  //	  //uart switch to bt
 
 	{0x28, 0x80A1},      	// bt en
@@ -772,32 +772,32 @@ u16 rda_5990_bt_en_data[][2] =
 };
 
 
-u16 rda_5990_bt_dc_cal[][2] = 
+u16 rda_5990_bt_dc_cal[][2] =
 {
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 	{0x30, 0x0129 },
 	{0x30, 0x012B },
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 };
 
 
-u16 rda_5990_bt_set_rf_switch_data[][2] = 
+u16 rda_5990_bt_set_rf_switch_data[][2] =
 {
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 	{0x0F, 0x2223 },
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 };
 
 
-u16 RDA5990_bt_enable_clk_data[][2] = 
+u16 RDA5990_bt_enable_clk_data[][2] =
 {
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 	{0x30, 0x0040 },
 	{0x2a, 0x285d },
-	{0x3f, 0x0000 }, 
+	{0x3f, 0x0000 },
 };
 
-u16 RDA5990_bt_dig_reset_data[][2] = 
+u16 RDA5990_bt_dig_reset_data[][2] =
 {
 	{0x3f, 0x0001 }, //pageup
 	{0x28, 0x86A1 },
@@ -807,7 +807,7 @@ u16 RDA5990_bt_dig_reset_data[][2] =
 };
 
 /*houzhen update 2012 03 06*/
-u16 rda_5990_bt_rf_data[][2] = 
+u16 rda_5990_bt_rf_data[][2] =
 {
 	{0x3f, 0x0000}, //pagedown
 	{0x01, 0x1FFF},
@@ -851,7 +851,7 @@ u16 rda_5990_bt_rf_data[][2] =
 	{0x1D, 0xFFFF},
 	{0x1E, 0xFFFF},
 	{0x1F, 0xFFFF},
-	//	{0x22, 0xD3C7},	
+	//	{0x22, 0xD3C7},
 	//	{0x23, 0x8fa1},
 	//	{0x24, 0x80c8},
 	//	{0x26, 0x47A5},
@@ -886,14 +886,14 @@ static int rda5990_bt_setup_A2_power(int enable)
 
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_BT_RF_ADDR, 0x22, temp_data);
 		if(ret)
-			goto err;   		
+			goto err;
 	}
 	else
 	{
 		ret = rda_gpio_i2c_read_1_addr_2_data(RDA_BT_RF_ADDR, 0x31, &temp_data);
 		if(ret)
 			goto err;
-		if(temp_data&0x8000)        // wf is on 
+		if(temp_data&0x8000)        // wf is on
 		{
 			goto out;
 		}
@@ -943,9 +943,9 @@ int rda_bt_power_on(void)
 			goto err;
 	}
 
-	ret=rda5990_bt_setup_A2_power(1);	
+	ret=rda5990_bt_setup_A2_power(1);
 	if(ret)
-	{   
+	{
 		printk(KERN_INFO "***rda5990_bt_setup_A2_power fail!!! \n");
 		goto err;
 	}
@@ -982,13 +982,13 @@ int rda_bt_power_off(void)
 	msleep(10);   //10ms
 	printk(KERN_INFO "***rda_bt_power_off success!!! \n");
 
-	ret=rda5990_bt_setup_A2_power(0);//disable ldo_pa reg 
+	ret=rda5990_bt_setup_A2_power(0);//disable ldo_pa reg
 	if(ret)
 		goto err;
 
 
 
-    mutex_unlock(&i2c_rw_lock);    
+    mutex_unlock(&i2c_rw_lock);
 	return 0;
 
 err:
@@ -1090,7 +1090,7 @@ err:
 
 
 
-/*houzhen update Mar 15 2012 
+/*houzhen update Mar 15 2012
   bypass RDA5990_bt_set_rf_switch when wf is already on
   */
 
@@ -1106,12 +1106,12 @@ int RDA5990_bt_set_rf_switch(void)
 
 	ret = rda_gpio_i2c_write_1_addr_2_data(RDA_BT_RF_ADDR, 0x3f, 0x0001);
 	if(ret)
-		goto err;	
+		goto err;
 
 	ret = rda_gpio_i2c_read_1_addr_2_data(RDA_BT_RF_ADDR, 0x31, &temp_data);
 
 	if(ret)
-		goto err;	
+		goto err;
 
 	if(temp_data&0x8000)   // if wf is already on
 	{
@@ -1119,8 +1119,8 @@ int RDA5990_bt_set_rf_switch(void)
 		printk(KERN_INFO "wf already en, bypass RDA5990_bt_set_rf_switch function \n");
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_BT_RF_ADDR, 0x3f, 0x0000);
 		if(ret)
-			goto err;	
-        mutex_unlock(&i2c_rw_lock);	
+			goto err;
+        mutex_unlock(&i2c_rw_lock);
 		return 0;
 	}
 
@@ -1128,7 +1128,7 @@ int RDA5990_bt_set_rf_switch(void)
 	{
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, rda_5990_bt_set_rf_switch_data[count][0], rda_5990_bt_set_rf_switch_data[count][1]);
 		if(ret)
-			goto err;	    
+			goto err;
 	}
 
     mutex_unlock(&i2c_rw_lock);
@@ -1144,7 +1144,7 @@ err:
 }
 
 
-/*houzhen update Mar 15 2012 
+/*houzhen update Mar 15 2012
   bypass RDA5990_bt_enable_clk when wf is already on
   */
 
@@ -1158,12 +1158,12 @@ int RDA5990_bt_enable_clk(void)
     mutex_lock(&i2c_rw_lock);
 	ret = rda_gpio_i2c_write_1_addr_2_data(RDA_BT_RF_ADDR, 0x3f, 0x0001);
 	if(ret)
-		goto err;	
+		goto err;
 
 	ret = rda_gpio_i2c_read_1_addr_2_data(RDA_BT_RF_ADDR, 0x31, &temp_data);
 
 	if(ret)
-		goto err;	
+		goto err;
 
 	if(temp_data&0x8000)   // if wf is already on
 	{
@@ -1171,7 +1171,7 @@ int RDA5990_bt_enable_clk(void)
 		printk(KERN_INFO "wf already en, bypass RDA5990_bt_enable_clk function \n");
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_BT_RF_ADDR, 0x3f, 0x0000);
 		if(ret)
-			goto err;	
+			goto err;
         mutex_unlock(&i2c_rw_lock);
 		return 0;
 	}
@@ -1181,7 +1181,7 @@ int RDA5990_bt_enable_clk(void)
 	{
 		ret = rda_gpio_i2c_write_1_addr_2_data(RDA_WIFI_RF_ADDR, RDA5990_bt_enable_clk_data[count][0], RDA5990_bt_enable_clk_data[count][1]);
 		if(ret)
-			goto err;	
+			goto err;
 	}
 
     mutex_unlock(&i2c_rw_lock);
@@ -1258,22 +1258,22 @@ static int rda_5990_pw_ioctl(struct file *file, unsigned int cmd, unsigned long 
 			ret = RDA5990_bt_rf_init();
 			break;
 
-		case RD_BT_DC_CAL_IOCTL:	
+		case RD_BT_DC_CAL_IOCTL:
 			ret = RDA5990_bt_dc_cal();
 			break;
 
-		case RD_BT_DC_DIG_RESET_IOCTL:	
+		case RD_BT_DC_DIG_RESET_IOCTL:
 			ret = RDA5990_bt_dig_reset();
 			break;
 
 		case RD_BT_SET_RF_SWITCH_IOCTL:
-			ret = RDA5990_bt_set_rf_switch();			
+			ret = RDA5990_bt_set_rf_switch();
 			break;
 
 		case RDA_BT_POWER_OFF_IOCTL:
 			{
 				mt_combo_bgf_disable_irq();
-				ret = rda_bt_power_off();               
+				ret = rda_bt_power_off();
 			}
 			break;
 
@@ -1284,7 +1284,7 @@ static int rda_5990_pw_ioctl(struct file *file, unsigned int cmd, unsigned long 
 	printk(KERN_INFO "rda_bt_pw_ioctl cmd=0x%02x \n", cmd);
 
 	return ret;
-}	
+}
 
 static int rda_5990_major;
 static struct class *rda_5990_class = NULL;
@@ -1324,7 +1324,7 @@ int rda_5990_power_ctrl_init(void)
 
 	INIT_DELAYED_WORK(&rda_5990_sleep_worker, rda_5990_sleep_worker_task);
 
-    mutex_init(&i2c_rw_lock);    
+    mutex_init(&i2c_rw_lock);
 	printk("rda_5990_power_ctrl_init end\n");
 	return 0;
 }
@@ -1334,7 +1334,7 @@ void rda_5990_power_ctrl_exit(void)
 
 	unregister_chrdev(rda_5990_major, "rdabt_power_ctrl");
 	if(rda_5990_class)
-		class_destroy(rda_5990_class);       
+		class_destroy(rda_5990_class);
 }
 
 unsigned char rda_5990_wifi_in_test_mode(void)
@@ -1429,7 +1429,7 @@ err:
 		sys_close(fd);
 
 	return -1;
-}  
+}
 
 EXPORT_SYMBOL(rda_wlan_version);
 EXPORT_SYMBOL(rda_wifi_init_uart);
@@ -1444,4 +1444,3 @@ module_init(rda_5990_power_ctrl_init);
 module_exit(rda_5990_power_ctrl_exit);
 
 MODULE_LICENSE("GPL");
-

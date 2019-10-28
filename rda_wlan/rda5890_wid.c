@@ -18,7 +18,7 @@
 static unsigned char is_need_set_notch = 0;
 
 /* for both Query and Write */
-int rda5890_wid_request(struct rda5890_private *priv, 
+int rda5890_wid_request(struct rda5890_private *priv,
 		char *wid_req, unsigned short wid_req_len,
 		char *wid_rsp, unsigned short *wid_rsp_len)
 {
@@ -30,7 +30,7 @@ int rda5890_wid_request(struct rda5890_private *priv,
 
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
 		"%s <<<\n", __func__);
-		
+
 #ifdef WIFI_TEST_MODE
   if(rda_5990_wifi_in_test_mode())
       return 0;
@@ -56,11 +56,11 @@ int rda5890_wid_request(struct rda5890_private *priv,
 	}
 
     atomic_inc(&card->wid_complete_flag);
-	timeleft = wait_for_completion_timeout(&priv->wid_done, msecs_to_jiffies(450)); 
+	timeleft = wait_for_completion_timeout(&priv->wid_done, msecs_to_jiffies(450));
 	if (timeleft == 0) {
 		RDA5890_ERRP("respose timeout wid :%x %x \n", wid_req[4], wid_req[5]);
 		priv->wid_pending = 0;
-		ret = -EFAULT; 
+		ret = -EFAULT;
 		goto out;
 	}
 
@@ -74,7 +74,7 @@ out:
 	return ret;
 }
 
-int rda5890_wid_request_polling(struct rda5890_private *priv, 
+int rda5890_wid_request_polling(struct rda5890_private *priv,
 		char *wid_req, unsigned short wid_req_len,
 		char *wid_rsp, unsigned short *wid_rsp_len)
 {
@@ -140,7 +140,7 @@ re_send:
 				goto out;
 			}
 			else
-				RDA5890_ERRP("read PKTLEN_H reg size_h:%d\n",size_h);	
+				RDA5890_ERRP("read PKTLEN_H reg size_h:%d\n",size_h);
 
 			size = (size_l | ((size_h & 0x7f) << 8)) * 4;
 			if (size < 4) {
@@ -167,7 +167,7 @@ re_send:
 #if 1
             if(priv->version == 7)
 				sdio_writeb(card->func, 0x20 ,IF_SDIO_FUN1_INT_PEND, &ret);
-#endif            
+#endif
 
 			/* TODO: this chunk size need to be handled here */
 			{
@@ -183,7 +183,7 @@ re_send:
 				rx_length = (unsigned short)(packet[0] + ((packet[1]&0x0f) << 8));
 
 				if (rx_length > chunk) {
-					RDA5890_ERRP("packet_len %d less than header specified length %d\n", 
+					RDA5890_ERRP("packet_len %d less than header specified length %d\n",
 						chunk, rx_length);
 					goto out;
 				}
@@ -195,7 +195,7 @@ re_send:
 					msg_type = packet[2];
 
 					if (msg_type == 'R')
-					{		
+					{
                         packet += 2;
                         if(priv->wid_msg_id - 1 == packet[1])
                         {
@@ -208,12 +208,12 @@ re_send:
                             break;
                         }
                         else
-                            RDA5890_ERRP("rda5890_wid_request_polling wid_msg_id is wrong %d %d wid=%x \n", priv->wid_msg_id -1, packet[1], (packet[4] | (packet[5] << 8)));					    
+                            RDA5890_ERRP("rda5890_wid_request_polling wid_msg_id is wrong %d %d wid=%x \n", priv->wid_msg_id -1, packet[1], (packet[4] | (packet[5] << 8)));
 					}
 				}
 			}
 		}
-        
+
        rda5890_shedule_timeout(3); //3ms delay
        ret = -1;
        retry ++;
@@ -222,13 +222,13 @@ re_send:
     if(ret < 0 && count <= 3)
         goto re_send;
 out:
-    
+
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
 		"%s <<< wid: %x %x retry: %d count = %d \n", __func__, wid_req[4],wid_req[5], retry, count);
 
 	return ret;
 }
-void rda5890_wid_response(struct rda5890_private *priv, 
+void rda5890_wid_response(struct rda5890_private *priv,
 		char *wid_rsp, unsigned short wid_rsp_len)
 {
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
@@ -242,7 +242,7 @@ void rda5890_wid_response(struct rda5890_private *priv,
 	if (wid_rsp_len > priv->wid_rsp_len) {
 		RDA5890_ERRP("not enough space for wid response, size = %d, buf = %d\n",
 			wid_rsp_len, priv->wid_rsp_len);
-		complete(&priv->wid_done); 
+		complete(&priv->wid_done);
 		return;
 	}
 
@@ -253,10 +253,10 @@ void rda5890_wid_response(struct rda5890_private *priv,
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
 		"%s <<<\n", __func__);
 
-	complete(&priv->wid_done); 
+	complete(&priv->wid_done);
 }
 
-void rda5890_wid_status(struct rda5890_private *priv, 
+void rda5890_wid_status(struct rda5890_private *priv,
 		char *wid_status, unsigned short wid_status_len)
 {
 	char mac_status;
@@ -268,38 +268,38 @@ void rda5890_wid_status(struct rda5890_private *priv,
 	if (mac_status == MAC_CONNECTED) {
 		RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_CRIT,
 			"MAC CONNECTED\n");
-        
+
 		priv->connect_status = MAC_CONNECTED;
 		netif_carrier_on(priv->dev);
 		netif_wake_queue(priv->dev);
         rda5890_indicate_connected(priv);
-                
+
 	    priv->first_init = 0;
         cancel_delayed_work(&priv->assoc_done_work);
 		queue_delayed_work(priv->work_thread, &priv->assoc_done_work, 0);
-        
+
         if(test_and_clear_bit(ASSOC_FLAG_ASSOC_RETRY, &priv->assoc_flags))
         {
             cancel_delayed_work_sync(&priv->assoc_work);
         }
 
-        if(test_bit(ASSOC_FLAG_WLAN_CONNECTING, &priv->assoc_flags))        
+        if(test_bit(ASSOC_FLAG_WLAN_CONNECTING, &priv->assoc_flags))
             cancel_delayed_work(&priv->wlan_connect_work);
-        
+
         set_bit(ASSOC_FLAG_WLAN_CONNECTING, &priv->assoc_flags);
 		queue_delayed_work(priv->work_thread, &priv->wlan_connect_work, HZ*20);
-        
+
 	}
 	else if (mac_status == MAC_DISCONNECTED) {
-        
+
 		RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_CRIT,
 			"MAC DISCONNECTED\n");
-	        
-        if(priv->connect_status == MAC_CONNECTED)	
+
+        if(priv->connect_status == MAC_CONNECTED)
 		    is_need_set_notch = 1;
 		else
 		    is_need_set_notch = 0;
-        
+
         if(!test_bit(ASSOC_FLAG_ASSOC_RETRY, &priv->assoc_flags))
             {
         		priv->connect_status = MAC_DISCONNECTED;
@@ -309,13 +309,13 @@ void rda5890_wid_status(struct rda5890_private *priv,
         		    rda5890_indicate_disconnected(priv);
                 else
                     priv->first_init = 0;
-                
+
                 if(test_bit(ASSOC_FLAG_ASSOC_START, &priv->assoc_flags))
                 {
                     cancel_delayed_work(&priv->wlan_connect_work);
 		            queue_delayed_work(priv->work_thread, &priv->wlan_connect_work, HZ*4);
                 }
-                
+
                 clear_bit(ASSOC_FLAG_ASSOC_START, &priv->assoc_flags);
                 clear_bit(ASSOC_FLAG_WLAN_CONNECTING, &priv->assoc_flags);
             }
@@ -330,10 +330,10 @@ void rda5890_wid_status(struct rda5890_private *priv,
 
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
 		"%s <<<\n", __func__);
-    
+
 }
 
-void rda5890_card_to_host(struct rda5890_private *priv, 
+void rda5890_card_to_host(struct rda5890_private *priv,
 		char *packet, unsigned short packet_len)
 {
 	unsigned char rx_type;
@@ -347,7 +347,7 @@ void rda5890_card_to_host(struct rda5890_private *priv,
 	rx_length = (unsigned short)(packet[0] + ((packet[1]&0x0f) << 8));
 
 	if (rx_length > packet_len) {
-		RDA5890_ERRP("packet_len %d less than header specified length %d\n", 
+		RDA5890_ERRP("packet_len %d less than header specified length %d\n",
 			packet_len, rx_length);
 		goto out;
 	}
@@ -372,11 +372,11 @@ void rda5890_card_to_host(struct rda5890_private *priv,
 #ifdef GET_SCAN_FROM_NETWORK_INFO
         else if(msg_type == 'N')
         {
-            extern void rda5890_network_information(struct rda5890_private *priv, 
+            extern void rda5890_network_information(struct rda5890_private *priv,
             char *info, unsigned short info_len);
             rda5890_network_information(priv, packet + 2, rx_length - 2);
         }
-#endif             
+#endif
 		else {
 			//RDA5890_ERRP("Invalid Message Type '%c'\n", msg_type);
 		}
@@ -403,7 +403,7 @@ out:
  * support only 1 wid per packet
  */
 int rda5890_check_wid_response(char *wid_rsp, unsigned short wid_rsp_len,
-		unsigned short wid, char wid_msg_id, 
+		unsigned short wid, char wid_msg_id,
 		char payload_len, char **ptr_payload)
 {
 	unsigned short rsp_len;
@@ -456,7 +456,7 @@ int rda5890_check_wid_response(char *wid_rsp, unsigned short wid_rsp_len,
 	*ptr_payload = wid_rsp + 7;
 
     return 0;
-    
+
 err:
     RDA5890_ERRP("rda5890_check_wid_response failed wid=0x%04x wid_msg_id:%d \n" ,wid_rsp[4] | (wid_rsp[5] << 8), wid_msg_id);
 	return -EINVAL;
@@ -465,7 +465,7 @@ err:
 /*
  * check wid status response
  */
-int rda5890_check_wid_status(char *wid_rsp, unsigned short wid_rsp_len, 
+int rda5890_check_wid_status(char *wid_rsp, unsigned short wid_rsp_len,
 		char wid_msg_id)
 {
 	int ret;
@@ -473,7 +473,7 @@ int rda5890_check_wid_status(char *wid_rsp, unsigned short wid_rsp_len,
 	char *ptr_payload;
 	char status_val;
 
-	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id, 
+	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id,
 	    1, &ptr_payload);
 	if (ret) {
 		RDA5890_ERRP("rda5890_check_wid_status, check_wid_response fail\n");
@@ -489,7 +489,7 @@ int rda5890_check_wid_status(char *wid_rsp, unsigned short wid_rsp_len,
 	return 0;
 }
 
-int rda5890_generic_get_uchar(struct rda5890_private *priv, 
+int rda5890_generic_get_uchar(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val)
 {
 	int ret;
@@ -515,7 +515,7 @@ int rda5890_generic_get_uchar(struct rda5890_private *priv,
 		goto out;
 	}
 
-	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id, 
+	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id,
 		sizeof(unsigned char), &ptr_payload);
 	if (ret) {
 		RDA5890_ERRP("check_wid_response fail, ret = %d\n", ret);
@@ -527,7 +527,7 @@ out:
 	return ret;
 }
 
-int rda5890_generic_set_uchar(struct rda5890_private *priv, 
+int rda5890_generic_set_uchar(struct rda5890_private *priv,
 		unsigned short wid, unsigned char val)
 {
 	int ret;
@@ -565,7 +565,7 @@ out:
 }
 
 #if 1
-int rda5890_generic_get_ushort(struct rda5890_private *priv, 
+int rda5890_generic_get_ushort(struct rda5890_private *priv,
 		unsigned short wid, unsigned short *val)
 {
 	int ret;
@@ -591,20 +591,20 @@ int rda5890_generic_get_ushort(struct rda5890_private *priv,
 		goto out;
 	}
 
-	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id, 
+	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id,
 		sizeof(unsigned short), &ptr_payload);
 	if (ret) {
 		RDA5890_ERRP("check_wid_response fail, ret = %d\n", ret);
 		goto out;
 	}
 
-	memcpy(val, ptr_payload, sizeof(unsigned short)); 
+	memcpy(val, ptr_payload, sizeof(unsigned short));
 
 out:
 	return ret;
 }
 
-int rda5890_generic_set_ushort(struct rda5890_private *priv, 
+int rda5890_generic_set_ushort(struct rda5890_private *priv,
 		unsigned short wid, unsigned short val)
 {
 	int ret;
@@ -624,7 +624,7 @@ int rda5890_generic_set_ushort(struct rda5890_private *priv,
 	wid_req[5] = (char)((wid&0xFF00) >> 8);
 
 	wid_req[6] = (char)(sizeof(unsigned short));
-	memcpy(wid_req + 7, &val, sizeof(unsigned short)); 
+	memcpy(wid_req + 7, &val, sizeof(unsigned short));
 
 	ret = rda5890_wid_request(priv, wid_req, wid_req_len, wid_rsp, &wid_rsp_len);
 	if (ret) {
@@ -643,7 +643,7 @@ out:
 }
 #endif
 
-int rda5890_generic_get_ulong(struct rda5890_private *priv, 
+int rda5890_generic_get_ulong(struct rda5890_private *priv,
 		unsigned short wid, unsigned long *val)
 {
 	int ret;
@@ -669,20 +669,20 @@ int rda5890_generic_get_ulong(struct rda5890_private *priv,
 		goto out;
 	}
 
-	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id, 
+	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id,
 		sizeof(unsigned long), &ptr_payload);
 	if (ret) {
 		RDA5890_ERRP("check_wid_response fail, ret = %d\n", ret);
 		goto out;
 	}
 
-	memcpy(val, ptr_payload, sizeof(unsigned long)); 
+	memcpy(val, ptr_payload, sizeof(unsigned long));
 
 out:
 	return ret;
 }
 
-int rda5890_generic_set_ulong(struct rda5890_private *priv, 
+int rda5890_generic_set_ulong(struct rda5890_private *priv,
 		unsigned short wid, unsigned long val)
 {
 	int ret;
@@ -702,7 +702,7 @@ int rda5890_generic_set_ulong(struct rda5890_private *priv,
 	wid_req[5] = (char)((wid&0xFF00) >> 8);
 
 	wid_req[6] = (char)(sizeof(unsigned long));
-	memcpy(wid_req + 7, &val, sizeof(unsigned long)); 
+	memcpy(wid_req + 7, &val, sizeof(unsigned long));
 
 	ret = rda5890_wid_request(priv, wid_req, wid_req_len, wid_rsp, &wid_rsp_len);
 	if (ret) {
@@ -720,7 +720,7 @@ out:
 	return ret;
 }
 
-int rda5890_generic_get_str(struct rda5890_private *priv, 
+int rda5890_generic_get_str(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val, unsigned char len)
 {
 	int ret;
@@ -746,20 +746,20 @@ int rda5890_generic_get_str(struct rda5890_private *priv,
 		goto out;
 	}
 
-	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id, 
+	ret = rda5890_check_wid_response(wid_rsp, wid_rsp_len, wid, wid_msg_id,
 		(char)len, &ptr_payload);
 	if (ret) {
 		RDA5890_ERRP("check_wid_response fail, ret = %d\n", ret);
 		goto out;
 	}
 
-	memcpy(val, ptr_payload, len); 
+	memcpy(val, ptr_payload, len);
 
 out:
 	return ret;
 }
 
-int rda5890_generic_set_str(struct rda5890_private *priv, 
+int rda5890_generic_set_str(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val, unsigned char len)
 {
 	int ret;
@@ -779,7 +779,7 @@ int rda5890_generic_set_str(struct rda5890_private *priv,
 	wid_req[5] = (char)((wid&0xFF00) >> 8);
 
 	wid_req[6] = (char)(len);
-	memcpy(wid_req + 7, val, len); 
+	memcpy(wid_req + 7, val, len);
 
 	ret = rda5890_wid_request(priv, wid_req, wid_req_len, wid_rsp, &wid_rsp_len);
 	if (ret) {
@@ -799,7 +799,7 @@ out:
 
 int rda5890_check_wid_response_unknown_len(
         char *wid_rsp, unsigned short wid_rsp_len,
-		unsigned short wid, char wid_msg_id, 
+		unsigned short wid, char wid_msg_id,
 		char *payload_len, char **ptr_payload)
 {
 	unsigned short rsp_len;
@@ -855,7 +855,7 @@ err:
     return -EINVAL;
 }
 
-int rda5890_get_str_unknown_len(struct rda5890_private *priv, 
+int rda5890_get_str_unknown_len(struct rda5890_private *priv,
 		unsigned short wid, unsigned char *val, unsigned char *len)
 {
 	int ret;
@@ -888,7 +888,7 @@ int rda5890_get_str_unknown_len(struct rda5890_private *priv,
 		goto out;
 	}
 
-	memcpy(val, ptr_payload, *len); 
+	memcpy(val, ptr_payload, *len);
 
 out:
 	return ret;
@@ -911,7 +911,7 @@ int rda5890_start_scan(struct rda5890_private *priv)
     }
 
     wid_msg_id = priv->wid_msg_id++;
-    
+
 	wid_req[0] = 'W';
 	wid_req[1] = wid_msg_id;
 
@@ -931,12 +931,12 @@ int rda5890_start_scan(struct rda5890_private *priv)
 
 	wid_req[10] = (char)(0x01);
 	wid_req[11] = (char)(0x01);
-    
+
 
     wid_req_len = 12;
 	wid_req[2] = (char)(wid_req_len&0x00FF);
 	wid_req[3] = (char)((wid_req_len&0xFF00) >> 8);
-    
+
 	ret = rda5890_wid_request(priv, wid_req, wid_req_len, wid_rsp, &wid_rsp_len);
 	if (ret) {
 		RDA5890_ERRP("rda5890_wid_request fail, ret = %d\n", ret);
@@ -970,7 +970,7 @@ int rda5890_start_scan_enable_network_info(struct rda5890_private *priv)
     }
 
     wid_msg_id = priv->wid_msg_id++;
-    
+
 	wid_req[0] = 'W';
 	wid_req[1] = wid_msg_id;
 
@@ -990,14 +990,14 @@ int rda5890_start_scan_enable_network_info(struct rda5890_private *priv)
 
 	wid_req[10] = (char)(0x01);
 	wid_req[11] = (char)(0x01);
-    
+
     wid = WID_NETWORK_INFO_EN;
 	wid_req[12] = (char)(wid&0x00FF);
 	wid_req[13] = (char)((wid&0xFF00) >> 8);
 
 	wid_req[14] = (char)(0x01);
 	wid_req[15] = (char)(0x01); // 0x01 scan network info
-	
+
 	wid_req_len = 16;
 	wid_req[2] = (char)(wid_req_len&0x00FF);
 	wid_req[3] = (char)((wid_req_len&0xFF00) >> 8);
@@ -1030,11 +1030,11 @@ int rda5890_start_join(struct rda5890_private *priv)
     unsigned short i = 0;
     unsigned char * wep_key = 0, key_str_len = 0;
     unsigned char key_str[26 + 1] , * key, *pWid_req;
-    
+
     RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
         "%s <<< mode:%d authtype:%d ssid:%s\n", __func__, priv->imode, priv->authtype,
         priv->assoc_ssid);
-    
+
 	wid_req[0] = 'W';
 	wid_req[1] = wid_msg_id;
 
@@ -1042,34 +1042,34 @@ int rda5890_start_join(struct rda5890_private *priv)
     wid = WID_802_11I_MODE;
 	wid_req[4] = (char)(wid&0x00FF);
 	wid_req[5] = (char)((wid&0xFF00) >> 8);
-    
+
 	wid_req[6] = 1;
     wid_req[7] = priv->imode;
 
     wid = WID_AUTH_TYPE;
     wid_req[8] = (char)(wid&0x00FF);
 	wid_req[9] = (char)((wid&0xFF00) >> 8);
-    
+
 	wid_req[10] = 1;
     wid_req[11] = priv->authtype;
-    
+
 #ifdef GET_SCAN_FROM_NETWORK_INFO
     wid = WID_NETWORK_INFO_EN;
     wid_req[12] = (char)(wid&0x00FF);
 	wid_req[13] = (char)((wid&0xFF00) >> 8);
-    
+
 	wid_req[14] = 1;
     wid_req[15] = 0;
 
     wid = WID_CURRENT_TX_RATE;
     wid_req[16] = (char)(wid&0x00FF);
 	wid_req[17] = (char)((wid&0xFF00) >> 8);
-    
+
 	wid_req[18] = 1;
     wid_req[19] = 1;
-    
+
     wid_req_len = 20;
-    pWid_req = wid_req + 20;    
+    pWid_req = wid_req + 20;
 #else
     wid_req_len = 12;
     pWid_req = wid_req + 12;
@@ -1083,9 +1083,9 @@ int rda5890_start_join(struct rda5890_private *priv)
 
             if(priv->wep_keys[i].len == 0)
                 continue;
-            
+
             if (priv->wep_keys[i].len == KEY_LEN_WEP_40) {
-                sprintf(key_str, "%02x%02x%02x%02x%02x\n", 
+                sprintf(key_str, "%02x%02x%02x%02x%02x\n",
                 key[0], key[1], key[2], key[3], key[4]);
                 key_str_len = 10;
                 key_str[key_str_len] = '\0';
@@ -1105,12 +1105,12 @@ int rda5890_start_join(struct rda5890_private *priv)
 
             pWid_req[0] = (char)((wid + i)&0x00FF);
 	        pWid_req[1] = (char)(((wid + i)&0xFF00) >> 8);
-    
+
 	        pWid_req[2] = key_str_len;
             memcpy(pWid_req + 3, key_str, key_str_len);
-            
+
             pWid_req += 3 + key_str_len;
-            wid_req_len += 3 + key_str_len;            
+            wid_req_len += 3 + key_str_len;
         }
     }
 
@@ -1118,13 +1118,13 @@ int rda5890_start_join(struct rda5890_private *priv)
     wid = WID_SSID;
     pWid_req[0] = (char)(wid&0x00FF);
 	pWid_req[1] = (char)((wid&0xFF00) >> 8);
-    
+
 	pWid_req[2] = priv->assoc_ssid_len;
     memcpy(pWid_req + 3, priv->assoc_ssid, priv->assoc_ssid_len);
-    
+
     wid_req_len += 3 + priv->assoc_ssid_len;
 
-    
+
 	wid_req[2] = (char)(wid_req_len&0x00FF);
 	wid_req[3] = (char)((wid_req_len&0xFF00) >> 8);
 
@@ -1141,11 +1141,11 @@ int rda5890_start_join(struct rda5890_private *priv)
 	}
 
 out:
-    
+
     RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
         "%s >>> ret = %d req len %d mod:0x%x auth_type:0x%x \n", __func__, ret, wid_req_len, priv->imode
         , priv->authtype);
-	return ret;    
+	return ret;
 }
 
 int rda5890_set_txrate(struct rda5890_private *priv, unsigned char mbps)
@@ -1271,11 +1271,11 @@ int rda5890_set_core_patch_polling(struct rda5890_private *priv, const unsigned 
         unsigned short wid_rsp_len = 32;
         unsigned short wid;
         char wid_msg_id = priv->wid_msg_id++;
-        char count = 0 , *p_wid_req = NULL;	
-        
+        char count = 0 , *p_wid_req = NULL;
+
     	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
-		"%s <<< \n", __func__);	
-        
+		"%s <<< \n", __func__);
+
         wid_req[0] = 'W';
         wid_req[1] = wid_msg_id;
 
@@ -1308,7 +1308,7 @@ int rda5890_set_core_patch_polling(struct rda5890_private *priv, const unsigned 
 
 out:
         RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_DEBUG,
-		"%s >>> \n", __func__);	
+		"%s >>> \n", __func__);
         return ret;
 }
 
@@ -1321,8 +1321,8 @@ int rda5890_set_core_patch(struct rda5890_private *priv, const unsigned char (*p
         unsigned short wid_rsp_len = 32;
         unsigned short wid;
         char wid_msg_id = priv->wid_msg_id++;
-        char count = 0 , *p_wid_req = NULL;	
-	
+        char count = 0 , *p_wid_req = NULL;
+
         wid_req[0] = 'W';
         wid_req[1] = wid_msg_id;
 
@@ -1392,7 +1392,7 @@ out:
 }
 
 /* support only one bss per packet for now */
-int rda5890_get_scan_results(struct rda5890_private *priv, 
+int rda5890_get_scan_results(struct rda5890_private *priv,
 		struct rda5890_bss_descriptor *bss_desc)
 {
 	int ret;
@@ -1417,7 +1417,7 @@ int rda5890_get_scan_results(struct rda5890_private *priv,
 	count = (len - 2) / sizeof(struct rda5890_bss_descriptor);
 
     first_send = *(buf + 1);
-	memcpy(bss_desc, buf + 2, (len - 2)); 
+	memcpy(bss_desc, buf + 2, (len - 2));
 
 	return (count | first_send << 8);
 }
@@ -1470,11 +1470,11 @@ int rda5890_get_rssi(struct rda5890_private *priv, unsigned char *rssi)
 	{
 		if(*rssi > 215)
 		{
-			rda5890_rssi_up_to_200(priv);			
+			rda5890_rssi_up_to_200(priv);
 		}
 		else
 		{
-			rda5890_sdio_set_notch_by_channel(priv, priv->curbssparams.channel);			
+			rda5890_sdio_set_notch_by_channel(priv, priv->curbssparams.channel);
 		}
 	}
     else
@@ -1528,14 +1528,14 @@ int rda5890_set_scan_complete(struct rda5890_private *priv)
 	if (ret) {
 		goto out;
 	}
-     
+
 out:
       RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE, "rda5890_set_scan_complete  ret=%d \n", ret);
 	return ret;
 }
 #endif
 
-int rda5890_set_ssid(struct rda5890_private *priv, 
+int rda5890_set_ssid(struct rda5890_private *priv,
 		unsigned char *ssid, unsigned char ssid_len)
 {
 	int ret;
@@ -1555,18 +1555,18 @@ out:
 	return ret;
 }
 
-int rda5890_get_ssid(struct rda5890_private *priv, 
+int rda5890_get_ssid(struct rda5890_private *priv,
 		unsigned char *ssid, unsigned char *ssid_len)
 {
     int ret;
-    
+
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE,
 		"Get SSID \n");
-    
+
     ret = rda5890_get_str_unknown_len(priv, WID_SSID, ssid, ssid_len);
     if(*ssid_len > 0)
         ssid[*ssid_len] = '\0';
-    
+
     RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE,
 	"Get SSID Done len:%d %s\n", *ssid_len, *ssid_len > 0? ssid:"NULL");
 out:
@@ -1667,7 +1667,7 @@ out:
 }
 
 
-int rda5890_set_wepkey(struct rda5890_private *priv, 
+int rda5890_set_wepkey(struct rda5890_private *priv,
 		unsigned short index, unsigned char *key, unsigned char key_len)
 {
 	int ret;
@@ -1675,7 +1675,7 @@ int rda5890_set_wepkey(struct rda5890_private *priv,
 	unsigned char key_str_len;
 
 	if (key_len == KEY_LEN_WEP_40) {
-		sprintf(key_str, "%02x%02x%02x%02x%02x\n", 
+		sprintf(key_str, "%02x%02x%02x%02x%02x\n",
 			key[0], key[1], key[2], key[3], key[4]);
 		key_str_len = 10;
 		key_str[key_str_len] = '\0';
@@ -1726,11 +1726,11 @@ static void dump_key(unsigned char *key, unsigned char key_len)
 			key[24], key[25], key[26], key[27], key[28], key[29], key[30], key[31]);
 }
 
-int rda5890_set_ptk(struct rda5890_private *priv, 
+int rda5890_set_ptk(struct rda5890_private *priv,
 		unsigned char *key, unsigned char key_len)
 {
 	int ret;
-	unsigned char key_str[32 + ETH_ALEN + 1]; 
+	unsigned char key_str[32 + ETH_ALEN + 1];
 	unsigned char key_str_len = key_len + ETH_ALEN + 1;
 
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE,
@@ -1790,7 +1790,7 @@ int rda5890_set_gtk(struct rda5890_private *priv, unsigned char key_id,
 		unsigned char *key, unsigned char key_len)
 {
 	int ret;
-	unsigned char key_str[32 + ETH_ALEN + 8 + 2]; 
+	unsigned char key_str[32 + ETH_ALEN + 8 + 2];
 	unsigned char key_str_len = key_len + ETH_ALEN + 8 + 2;
 
 	/*---------------------------------------------------------*/
@@ -1863,7 +1863,7 @@ int rda5890_set_scan_timeout(struct rda5890_private *priv)
 	"rda5890_set_scan_timeout <<< \n");
 
     wid = WID_SITE_SURVEY_SCAN_TIME;
-    
+
 	wid_req[0] = 'W';
 	wid_req[1] = wid_msg_id;
 
@@ -1941,4 +1941,3 @@ int rda5890_set_preasso_sleep(struct rda5890_private *priv, unsigned int preasso
 out:
 	return ret;
 }
-

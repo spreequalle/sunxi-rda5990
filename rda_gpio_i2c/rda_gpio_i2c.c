@@ -3,7 +3,7 @@
  *
  *       Filename:  rda_gpio_i2c.c
  *
- *    Description:  
+ *    Description:
  *
  *        Version:  1.0
  *        Created:  04/19/2012 11:24:48 PM
@@ -11,7 +11,7 @@
  *       Compiler:  gcc
  *
  *         Author:  Allen_Hu
- *   Organization: RDA Inc. 
+ *   Organization: RDA Inc.
  *
  * =====================================================================================
  */
@@ -120,24 +120,24 @@ void disable_32k_rtc(void)
 	msleep(50);
 }
 
-void i2c_start(void)  
-{    
+void i2c_start(void)
+{
 	set_SDA_output();
 	set_SCL_output();
 
 	set_SDA_high();
-	i2c_delay(DELAY);  
+	i2c_delay(DELAY);
 	set_SCL_high();
-	i2c_delay(DELAY);  
+	i2c_delay(DELAY);
 
 	set_SDA_low();
 	i2c_delay(DELAY);
 	set_SCL_low();
 	i2c_delay(DELAY);
-}  
+}
 
-void i2c_stop(void)  
-{   
+void i2c_stop(void)
+{
 	set_SDA_output();
 	set_SCL_output();
 	set_SDA_low();
@@ -149,7 +149,7 @@ void i2c_stop(void)
 }
 
 
-/* 
+/*
  * return value:
  *      0 ---  收到ACK
  *      1 ---  没收到ACK
@@ -194,7 +194,7 @@ u8 i2c_send_byte(u8 send_byte)
 	return rc;
 }
 
-/* 
+/*
  * ack = 0 发送ACK
  * ack = 1 不发送ACK
  */
@@ -205,7 +205,7 @@ void i2c_read_byte(u8 *buffer, u8 ack)
 	u8 temp = 0;
 
 	set_SCL_output();
-	while(count > 0) { 
+	while(count > 0) {
 		set_SCL_low();
 		i2c_delay(2*DELAY);
 		if(count == 8)
@@ -220,7 +220,7 @@ void i2c_read_byte(u8 *buffer, u8 ack)
 
 		i2c_delay(DELAY);
 		count--;
-	} 
+	}
 
 	set_SCL_low();
 	i2c_delay(2*DELAY);
@@ -239,15 +239,15 @@ void i2c_read_byte(u8 *buffer, u8 ack)
 	set_SCL_low();
 }
 
-/*     
-*  write data to the I2C bus by GPIO simulated of a digital device rountine. 
-* 
-*  @param  
+/*
+*  write data to the I2C bus by GPIO simulated of a digital device rountine.
+*
+*  @param
 *		chipAddr:  address of the device
 *		regAddr:   address of register within device
 *       data:    the data to be written
 *       len:	   the data length
-*   
+*
 */
 int rda_gpio_i2c_write_1_addr_2_data(u8 chipAddr, u8 regAddr, unsigned short data)
 {
@@ -282,15 +282,15 @@ out:
 	//return acknowledge;
 	return ret;
 }
-/*     
-*  read data from the I2C bus by GPIO simulated of a digital device rountine. 
-* 
-*  @param  
+/*
+*  read data from the I2C bus by GPIO simulated of a digital device rountine.
+*
+*  @param
 *		chipAddr:  address of the device
 *		regAddr:   address of register within device
 *       buffer:    the data to be stored
 *       len:	   the data length
-*   
+*
 */
 int rda_gpio_i2c_read_1_addr_2_data(u8 chipAddr, u8 regAddr, unsigned short *buffer)
 {
@@ -309,7 +309,7 @@ int rda_gpio_i2c_read_1_addr_2_data(u8 chipAddr, u8 regAddr, unsigned short *buf
 		goto out;
 	}
 
-	i2c_start();//restart   
+	i2c_start();//restart
 	acknowledge = i2c_send_byte( (chipAddr << 1) | 0x01 );
 	if(acknowledge == 1){
 		ret = -1;
@@ -361,7 +361,7 @@ u8 rda_gpio_i2c_read_4_addr_4_data(u8 chipAddr, unsigned int regAddr, unsigned i
 	acknowledge = i2c_send_byte(regAddr>>8);
 	acknowledge = i2c_send_byte(regAddr);
 
-	i2c_start();//restart   
+	i2c_start();//restart
 	acknowledge = i2c_send_byte( (chipAddr << 1) | 0x01 );
 
 	i2c_read_byte(&tempdata, 0);
@@ -380,7 +380,7 @@ u8 rda_gpio_i2c_read_4_addr_4_data(u8 chipAddr, unsigned int regAddr, unsigned i
 void rda_gpio_i2c_enable_32k(unsigned int flag)
 {
 	if(rda5990_32k_state == 0 )
-	{	
+	{
 		enable_32k_rtc();
 	}
 	rda5990_32k_state |= (flag&0x07);
@@ -393,13 +393,13 @@ void rda_gpio_i2c_disable_32k(unsigned int flag)
 		disable_32k_rtc();
 }
 
-/*   
-* initializes I2C interface routine. 
-* 
+/*
+* initializes I2C interface routine.
+*
 * @return value:
-*		0--success; 
-*		1--error. 
-* 
+*		0--success;
+*		1--error.
+*
 */
 static int __init rda_gpio_i2c_init(void)
 {

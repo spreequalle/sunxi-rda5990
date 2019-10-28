@@ -47,10 +47,10 @@ void export_wifi_eirq_disable(void)
 }
 
 /* Module parameters */
-module_param_named(debug_level, rda5890_dbg_level, int, 0644); 
-module_param_named(debug_area, rda5890_dbg_area, int, 0644); 
+module_param_named(debug_level, rda5890_dbg_level, int, 0644);
+module_param_named(debug_area, rda5890_dbg_area, int, 0644);
 int sdio_test_flag = 0;
-module_param_named(sdio_test, sdio_test_flag, int, 0644); 
+module_param_named(sdio_test, sdio_test_flag, int, 0644);
 
 #define SDIO_VENDOR_ID_RDA5890        0x5449
 #define SDIO_DEVICE_ID_RDA5890        0x0145
@@ -93,7 +93,7 @@ int if_sdio_card_to_host(struct if_sdio_card *card)
 		goto out;
 	}
 	else
-		RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_NORM,"read PKTLEN_H reg size_h:%d\n",size_h);	
+		RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_NORM,"read PKTLEN_H reg size_h:%d\n",size_h);
 
 	size = (size_l | ((size_h & 0x7f) << 8)) * 4;
 	if (size < 4) {
@@ -153,7 +153,7 @@ void if_sdio_sleep_worker(struct work_struct *work)
 
 	card = container_of(work, struct if_sdio_card,
                 sleep_work.work);
-	
+
 	if(card)
 		priv = card->priv;
 	else
@@ -172,7 +172,7 @@ void if_sdio_sleep_worker(struct work_struct *work)
 	{
 		RDA5890_ERRP("clear IF_SDIO_HOST_TX_FLAG failed\n");
 	}
-	atomic_inc(&card->priv->sleep_flag); 
+	atomic_inc(&card->priv->sleep_flag);
 
 out:
 
@@ -198,7 +198,7 @@ static int if_sdio_wakeup_card(struct if_sdio_card *card)
 		goto out;
 	}
     atomic_set(&priv->sleep_flag, 0);
-      
+
 	RDA5890_DBGLAP(RDA5890_DA_PM, RDA5890_DL_CRIT, "wake up \n");
 	// wait 15ms, hardware need 13ms to wakeup
     rda5890_shedule_timeout(8);
@@ -225,9 +225,9 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
 	priv = card->priv;
 
 
-#ifdef WIFI_POWER_MANAGER    
+#ifdef WIFI_POWER_MANAGER
     if(is_sdio_init_complete())
-    {   
+    {
         if(atomic_read(&card->sleep_work_is_active))
         {
             cancel_delayed_work(&card->sleep_work);
@@ -236,10 +236,10 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
     }
 #endif
 
-	while (1) 
-    {  
+	while (1)
+    {
     	retries = 500;
-    	  
+
         spin_lock_irqsave(&card->lock, flags);
         packet = card->packets;
         if (packet)
@@ -248,14 +248,14 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
 
         if (!packet)
         	break;
-			
-#ifdef WIFI_POWER_MANAGER		
-		if (atomic_read(&priv->sleep_flag)) 
+
+#ifdef WIFI_POWER_MANAGER
+		if (atomic_read(&priv->sleep_flag))
         {
             /* Deivce maybe sleep, wakeup it. */
             RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_NORM, "Wakeup\n");
             ret = if_sdio_wakeup_card(card);
-            if (ret) 
+            if (ret)
             {
                 RDA5890_ERRP("wakeup card fail\n");
                 goto out;
@@ -291,7 +291,7 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
                 break;
             }
         }
-        
+
 		RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
 			"if_sdio_host_to_card_worker, send one packet, size = %d\n", packet->nb);
 		/* write length */
@@ -318,11 +318,11 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
 		/* write data */
 		bytes_left = packet->nb;
 		offset = 0;
-		while(bytes_left) 
+		while(bytes_left)
         {
 			batch = (bytes_left < SDIO_HOST_WRITE_BATCH_SIZE)?
 				bytes_left:SDIO_HOST_WRITE_BATCH_SIZE;
-        
+
             sdio_claim_host(card->func);
 		ret = sdio_writesb(card->func, IF_SDIO_FUN1_FIFO_WR,
 			packet->buffer + offset, batch);
@@ -331,25 +331,25 @@ static void if_sdio_host_to_card_worker(struct work_struct *work)
 			RDA5890_ERRP("sdio_writesb fail, ret = %d\n", ret);
 			goto release;
 		}
-        
+
 		RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
 			"write batch %d, offset = %d\n", batch, offset);
-        
+
 		offset += batch;
 		bytes_left -= batch;
 	}
 
 	RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
 		"if_sdio_host_to_card_worker, send one packet done\n");
-        
+
 release:
- 
+
 		kfree(packet);
         packet = NULL;
 	}
-    
+
 out:
-    
+
 	if(is_sdio_init_complete()) //init complete should start sleep_work
     {
 #ifdef WIFI_POWER_MANAGER
@@ -359,7 +359,7 @@ out:
 #endif  //end WIFI_TEST_MODE
         atomic_set(&card->sleep_work_is_active, 1);
 	    queue_delayed_work(priv->work_thread, &card->sleep_work, HZ/5);  // 100ms
-#endif	 //end WIFI_POWER_MANAGER   
+#endif	 //end WIFI_POWER_MANAGER
     }
 }
 
@@ -434,25 +434,25 @@ out:
 }
 
 static void if_sdio_interrupt(struct sdio_func *func)
-{ 
+{
     int ret = 0;
     struct if_sdio_card *card;
     struct rda5890_private *priv;
     u8 status;
 
     RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
-    	"%s >>>\n", __func__); 
+    	"%s >>>\n", __func__);
 
     card = sdio_get_drvdata(func);
     if(!card)
         return;
-    
+
     priv = card->priv;
-	
+
     status = sdio_readb(card->func, IF_SDIO_FUN1_INT_STAT, &ret);
     if (ret)
     	goto out;
-    
+
     RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_VERB,
     	"if_sdio_interrupt, status = 0x%02x\n", status);
 
@@ -462,7 +462,7 @@ static void if_sdio_interrupt(struct sdio_func *func)
     if (status & IF_SDIO_INT_ERROR)
     {
         sdio_writeb(card->func, IF_SDIO_INT_ERROR, IF_SDIO_FUN1_INT_PEND, &ret);
-        if (ret) 
+        if (ret)
         {
         	RDA5890_ERRP("write FUN1_INT_STAT reg fail\n");
         	goto out;
@@ -474,17 +474,17 @@ static void if_sdio_interrupt(struct sdio_func *func)
 
 out:
     RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
-    	"%s <<< ret=%d \n", __func__, ret);   
+    	"%s <<< ret=%d \n", __func__, ret);
     return ret;
 }
 
 
 static int if_sdio_probe(struct sdio_func *func,
 		                        const struct sdio_device_id *id)
-{   
+{
     struct if_sdio_card *card = NULL;
     struct rda5890_private *priv = NULL;
-    struct if_sdio_packet *packet = NULL; 
+    struct if_sdio_packet *packet = NULL;
     int ret = -1;
     unsigned long flags;
 
@@ -501,22 +501,22 @@ static int if_sdio_probe(struct sdio_func *func,
 	    RDA5890_ERRP("rda5890 sdio  not corrent vendor:%x \n", id->vendor);
 	    goto out;
     }
-    
+
     card = kzalloc(sizeof(struct if_sdio_card), GFP_KERNEL);
     if (!card) {
     	RDA5890_ERRP("kzalloc fail\n");
     	return -ENOMEM;
-    }   
-    
+    }
+
     card->func = func;
-    spin_lock_init(&card->lock);  
+    spin_lock_init(&card->lock);
     atomic_set(&card->wid_complete_flag, 0);
     INIT_WORK(&card->packet_worker, if_sdio_host_to_card_worker);
     card->work_thread = create_singlethread_workqueue("rda5890_if_sdio_worker");
-    
-#ifdef WIFI_POWER_MANAGER   
+
+#ifdef WIFI_POWER_MANAGER
     atomic_set(&card->sleep_work_is_active, 0);
-    INIT_DELAYED_WORK(&card->sleep_work, if_sdio_sleep_worker); 
+    INIT_DELAYED_WORK(&card->sleep_work, if_sdio_sleep_worker);
 #endif
 
     sdio_claim_host(func);
@@ -524,7 +524,7 @@ static int if_sdio_probe(struct sdio_func *func,
     if (ret) {
         RDA5890_ERRP("sdio_enable_func fail, ret = %d\n", ret);
         goto release;
-    }   
+    }
 
     ret = sdio_claim_irq(func, if_sdio_interrupt);
     if (ret) {
@@ -534,7 +534,7 @@ static int if_sdio_probe(struct sdio_func *func,
 
     sdio_release_host(func);
     sdio_set_drvdata(func, card);
-    
+
     priv = rda5890_add_card(card);
 	if (!priv) {
 		RDA5890_ERRP("rda5890_add_card fail\n");
@@ -551,7 +551,7 @@ static int if_sdio_probe(struct sdio_func *func,
      * Enable interrupts now that everything is set up
      */
     sdio_claim_host(func);
-    sdio_writeb(func, 0x7, IF_SDIO_FUN1_INT_MASK, &ret); 
+    sdio_writeb(func, 0x7, IF_SDIO_FUN1_INT_MASK, &ret);
     sdio_release_host(func);
     if (ret) {
     	RDA5890_ERRP("enable func interrupt fail\n");
@@ -560,12 +560,12 @@ static int if_sdio_probe(struct sdio_func *func,
 #ifdef WIFI_TEST_MODE
     if(!rda_5990_wifi_in_test_mode())
         {
-#endif        
+#endif
             ret = rda5890_sdio_init(priv);
             if(ret < 0)
                 goto remove_card;
-            
-        	ret=rda5890_disable_self_cts(priv);   
+
+        	ret=rda5890_disable_self_cts(priv);
             if(ret < 0)
                 goto remove_card;
 
@@ -578,7 +578,7 @@ static int if_sdio_probe(struct sdio_func *func,
                 	RDA5890_ERRP("rda5890_set_scan_timeout fail, ret = %d\n", ret);
                 	goto remove_card;
             }
-        		
+
             ret= rda5890_set_listen_interval(priv, 0x06);
             if(ret < 0)
                 goto remove_card;
@@ -586,12 +586,12 @@ static int if_sdio_probe(struct sdio_func *func,
             ret = rda5890_set_link_loss_threshold(priv, 0x06);
             if(ret < 0)
                 goto remove_card;
-            
+
             ret = rda5890_init_pm(priv);
             if(ret < 0)
                 goto remove_card;
-            
-#ifdef WIFI_TEST_MODE            
+
+#ifdef WIFI_TEST_MODE
         }
     else
         {
@@ -634,8 +634,8 @@ disable:
 release:
 	sdio_release_host(func);
 
-remove_card:   
-    
+remove_card:
+
     if (atomic_read(&card->wid_complete_flag) && priv)
     {
         complete(&priv->wid_done);
@@ -643,21 +643,21 @@ remove_card:
     }
     flush_work(&card->packet_worker);
     cancel_work_sync(&card->packet_worker);
-    
+
 #ifdef WIFI_POWER_MANAGER
     cancel_delayed_work(&card->sleep_work);
 #endif
     destroy_workqueue(card->work_thread);
-    
+
     if(priv)
         rda5890_remove_card(priv);
 
     while (card->packets) {
     	packet = card->packets;
     	card->packets = card->packets->next;
-    	kfree(packet);	
+    	kfree(packet);
     }
-    
+
     kfree(card);
     goto out;
 }
@@ -666,11 +666,11 @@ static void if_sdio_remove(struct sdio_func *func)
 {
     struct if_sdio_card *card;
     struct if_sdio_packet *packet;
-    unsigned char count = 20; 
+    unsigned char count = 20;
 
     RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
     	"%s >>>\n", __func__);
-    
+
     printk(KERN_INFO "RDA5890: SDIO card detached\n");
 
     card = sdio_get_drvdata(func);
@@ -686,7 +686,7 @@ static void if_sdio_remove(struct sdio_func *func)
     cancel_delayed_work_sync(&card->sleep_work);
 #endif
     cancel_work_sync(&card->packet_worker);
-    
+
     if (atomic_read(&card->wid_complete_flag) && card->priv)
     {
         complete(&card->priv->wid_done);
@@ -699,20 +699,20 @@ static void if_sdio_remove(struct sdio_func *func)
     rda5890_debugfs_remove_one(card->priv);
     destroy_workqueue(card->work_thread);
     rda5890_remove_card(card->priv);
-    
+
     while (card->packets) {
     	packet = card->packets;
     	card->packets = card->packets->next;
     	kfree(packet);
-    } 
-    
+    }
+
     kfree(card);
 
     printk(KERN_INFO "RDA5890: SDIO card removed\n");
 
     RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_DEBUG,
-    	"%s <<<\n", __func__); 
-    return;   
+    	"%s <<<\n", __func__);
+    return;
 }
 
 static struct sdio_driver if_sdio_driver = {
@@ -732,9 +732,9 @@ static int __init if_sdio_init_module(void)
     int ret = 0;
 
     printk(KERN_INFO "\nRDA5890 SDIO WIFI Driver for st_linux \n");
-    printk(KERN_INFO "Ver: %d.%d.%d\n\n", 
-    	RDA5890_SDIOWIFI_VER_MAJ, 
-    	RDA5890_SDIOWIFI_VER_MIN, 
+    printk(KERN_INFO "Ver: %d.%d.%d\n\n",
+    	RDA5890_SDIOWIFI_VER_MAJ,
+    	RDA5890_SDIOWIFI_VER_MIN,
     	RDA5890_SDIOWIFI_VER_BLD);
 
 	printk("@@@@@@@@@@@@@@@22222 rda5990 start\n");

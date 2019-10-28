@@ -20,10 +20,10 @@
 // if need debug, define FMDEBUG
 //#define FMDEBUG
 
-// if your platform is MT6515/6575, define MTK_MT6515 
+// if your platform is MT6515/6575, define MTK_MT6515
 #define MTK_MT6515
 
-// if your platform is MT6515/6575 and MTK FM is MT6626, define MT6626 
+// if your platform is MT6515/6575 and MTK FM is MT6626, define MT6626
 //#define MT6626
 
 #define FM_ALERT(f, s...) \
@@ -89,7 +89,7 @@ typedef struct
 {
 	uint8_t		address;
 	uint16_t	value;
-}RDA_FM_REG_T;   
+}RDA_FM_REG_T;
 
 typedef struct
 {
@@ -178,7 +178,7 @@ static RDA_RADIO_WORK_E RDA_RADIO_WorkType = FM_RECEIVER;
 
 #if 1
 static uint16_t RDA5802N_initialization_reg[]={
-	0xC005, //02h 
+	0xC005, //02h
 	0x0000,
 	0x0400,
 	0xC6ED, //0x86AD, //05h
@@ -195,17 +195,17 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x0000,  //0x10h
 	0x0019,
 	0x2A11,
-	0xB042,  
-	0x2A11,  
-	0xB831,  //0x15h 
+	0xB042,
+	0x2A11,
+	0xB831,  //0x15h
 	0xC000,
 	0x2A91,
 	0x9400,
 	0x00A8,
 	0xc400,  //0x1ah
-	0xF7CF,  //Ìá¸ßÔ¶¶ËÔëÉùÒÖÖÆ  
-	0x2414, //0x2ADC,  //0x1ch ÌáÉıVIO VDDÖ®¼äÑ¹²îÒıÆğµÄ²»Á¼
-	0x806F, 
+	0xF7CF,  //æé«˜è¿œç«¯å™ªå£°æŠ‘åˆ¶
+	0x2414, //0x2ADC,  //0x1ch æå‡VIO VDDä¹‹é—´å‹å·®å¼•èµ·çš„ä¸è‰¯
+	0x806F,
 	0x4608,
 	0x0086,
 	0x0661, //0x20H
@@ -232,11 +232,11 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x0000,
 	0x0000,
 	0x0000,  //0x10h
-	0x0019,  
+	0x0019,
 	0x2a11,
 	0xa053,//0x80,0x53,
-	0x3e11,//0x22,0x11,	
-	0xfc7d,  //0x15h 
+	0x3e11,//0x22,0x11,
+	0xfc7d,  //0x15h
 	0xc000,
 	0x2a91,
 	0x9400,
@@ -248,7 +248,7 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x4608,
 	0x0086,
 	0x0661,  //0x20h
-	0x0000,  
+	0x0000,
 	0x109e,
 	0x2244,
 	0x0408,  //0x24
@@ -272,7 +272,7 @@ static RDA_FM_REG_T RDA5820NS_TX_initialization_reg[]={
 static RDA_FM_REG_T RDA5820NS_RX_initialization_reg[]={
 	{0x02, 0x0002}, //Soft reset
 	{0xFF, 100},    // wait
-	{0x02, 0xC001},  //Power Up 
+	{0x02, 0xC001},  //Power Up
 	{0x05, 0x888F},  //LNAP  0x884F --LNAN
 	{0x06, 0x6000},
 	{0x13, 0x80E1},
@@ -400,7 +400,7 @@ static int RDAFM_clear_hmute(uint8_t chipAddr)
 	ret = RDAFM_read(chipAddr, 0x02, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_clear_hmute  read register failed!\n"); 
+		FM_ALERT("RDAFM_clear_hmute  read register failed!\n");
 		return -1;
 	}
 
@@ -410,7 +410,7 @@ static int RDAFM_clear_hmute(uint8_t chipAddr)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_clear_hmute  write register failed!\n"); 
+		FM_ALERT("RDAFM_clear_hmute  write register failed!\n");
 		return -1;
 	}
 
@@ -440,7 +440,7 @@ static int RDAFM_enable_hmute(uint8_t chipAddr)
 	ret = RDAFM_read(chipAddr, 0x02, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_enable_hmute  read register failed!\n"); 
+		FM_ALERT("RDAFM_enable_hmute  read register failed!\n");
 		return -1;
 	}
 
@@ -450,7 +450,7 @@ static int RDAFM_enable_hmute(uint8_t chipAddr)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_enable_hmute  write register failed!\n"); 
+		FM_ALERT("RDAFM_enable_hmute  write register failed!\n");
 		return -1;
 	}
 
@@ -458,12 +458,12 @@ static int RDAFM_enable_hmute(uint8_t chipAddr)
 }
 
 
-static bool RDAFM_Scan(uint8_t chipAddr, 
+static bool RDAFM_Scan(uint8_t chipAddr,
 		uint16_t min_freq, uint16_t max_freq,
 		uint16_t *pFreq,
-		uint16_t *pScanTBL, 
-		uint16_t *ScanTBLsize, 
-		uint16_t scandir, 
+		uint16_t *pScanTBL,
+		uint16_t *ScanTBLsize,
+		uint16_t scandir,
 		uint16_t space)
 {
 	uint16_t tFreq, tRegValue = 0;
@@ -489,7 +489,7 @@ static bool RDAFM_Scan(uint8_t chipAddr,
 	if(scandir == RDA599X_FM_SCAN_UP){ // now, only support scan up
 		tFreq = min_freq;
 	}else{ //scan down
-		tFreq = max_freq;//max_freq compare need or not   
+		tFreq = max_freq;//max_freq compare need or not
 	}
 
 	//mute FM
@@ -514,7 +514,7 @@ static bool RDAFM_Scan(uint8_t chipAddr,
 		tRegValue = 0;
 		RDAFM_read(chipAddr, 0x03, &tRegValue);
 		tRegValue &= (~(0x03ff<<6)); //clear bit[15:6]
-		channel = tFreq - min_freq; 
+		channel = tFreq - min_freq;
 		tRegValue |= ((channel << 6) | (1 << 4)); //set bit[15:6] and bit[4]
 		ret = RDAFM_write(chipAddr, 0x03, tRegValue);
 		msleep(40);
@@ -589,8 +589,8 @@ static int fm_setup_cdev(struct fm *fm)
 	if (IS_ERR(fm->cls)) {
 		err = PTR_ERR(fm->cls);
 		FM_ALERT("class_create err:%d\n", err);
-		return err;            
-	}    
+		return err;
+	}
 	fm->dev = device_create(fm->cls, NULL, fm->dev_t, NULL, FM_NAME);
 
 	return 0;
@@ -716,10 +716,10 @@ static int fm_ops_ioctl(struct file *filp,
 				if (copy_from_user(&bmute, (void*)arg, sizeof(uint32_t)))
 				{
 					FM_DEBUG("copy_from_user mute failed!\n");
-					return -EFAULT;    
+					return -EFAULT;
 				}
 
-				FM_DEBUG("FM_IOCTL_MUTE:%d\n", bmute); 
+				FM_DEBUG("FM_IOCTL_MUTE:%d\n", bmute);
 				if (down_interruptible(&fm_ops_mutex))
 					return -EFAULT;
 
@@ -782,7 +782,7 @@ static int fm_ops_ioctl(struct file *filp,
 
 		case FM_IOCTL_GETCHIPID:
 			{
-				uint16_t chipid;            
+				uint16_t chipid;
 
 				if (down_interruptible(&fm_ops_mutex))
 					return -EFAULT;
@@ -790,7 +790,7 @@ static int fm_ops_ioctl(struct file *filp,
 				RDAFM_GetChipID(fm->chipAddr, &chipid);
 				//chipid = fm->chip_id;
 				chipid = 0x6620;
-				FM_DEBUG("FM_IOCTL_GETCHIPID:%04x\n", chipid);   
+				FM_DEBUG("FM_IOCTL_GETCHIPID:%04x\n", chipid);
 				up(&fm_ops_mutex);
 
 				if (copy_to_user((void*)arg, &chipid, sizeof(uint16_t)))
@@ -1020,10 +1020,10 @@ static loff_t fm_ops_lseek(struct file *filp, loff_t off, int whence)
 	if(whence == SEEK_END){
 		//fm_hwscan_stop(fm);
 		atomic_set(&scan_complete_flag, 0);
-	}else if(whence == SEEK_SET){  
+	}else if(whence == SEEK_SET){
 		//FM_EVENT_SEND(fm->rds_event, FM_RDS_DATA_READY);
-	}   
-	return off;    
+	}
+	return off;
 }
 
 static int fm_ops_open(struct inode *inode, struct file *filp)
@@ -1061,7 +1061,7 @@ static int fm_ops_release(struct inode *inode, struct file *filp)
 	fm->ref--;
 	if(fm->ref < 1) {
 		if(fm->powerup == true) {
-			fm_powerdown(fm);           
+			fm_powerdown(fm);
 		}
 	}
 
@@ -1372,7 +1372,7 @@ static int fm_seek(struct fm *fm, struct fm_seek_parm *parm)
 		fm->min_freq = 875;
 		fm->max_freq = 1080;
 	}
-	else if (parm->band == FM_BAND_JAPAN) 
+	else if (parm->band == FM_BAND_JAPAN)
 	{
 		val &= (~(1<<3));
 		val |= (1 << 2);
@@ -1464,7 +1464,7 @@ static int fm_seek(struct fm *fm, struct fm_seek_parm *parm)
 	RDAFM_clear_hmute(fm->chipAddr);
 
 	if (falseStation == 0) // seek successfully
-	{    
+	{
 		parm->freq = tFreq;
 		FM_ALERT("fm_seek success, freq:%d\n", parm->freq);
 		parm->err = FM_SUCCESS;
@@ -1487,8 +1487,8 @@ static int  fm_scan(struct fm *fm, struct fm_scan_parm *parm)
 {
 	int ret = 0;
 	uint16_t tRegValue = 0;
-	uint16_t scandir = RDA599X_FM_SCAN_UP; //scandir ËÑË÷·½Ïò
-	uint8_t space = 1; 
+	uint16_t scandir = RDA599X_FM_SCAN_UP; //scandir æœç´¢æ–¹å‘
+	uint8_t space = 1;
 
 	if (!fm->powerup){
 		parm->err = FM_BADSTATUS;
@@ -1644,7 +1644,7 @@ static int fm_tune(struct fm *fm, struct fm_tune_parm *parm)
 		fm->min_freq = 875;
 		fm->max_freq = 1080;
 	}
-	else if (parm->band == FM_BAND_JAPAN) 
+	else if (parm->band == FM_BAND_JAPAN)
 	{
 		val &= (~(1<<3));
 		val |= (1 << 2);
@@ -1698,10 +1698,10 @@ static int mt_fm_probe(struct platform_device *pdev)
 	if ((err = fm_init()))
 	{
 		FM_ALERT("fm_init ERR:%d\n", err);
-	}   
+	}
 
-	return err;   
-} 
+	return err;
+}
 
 static int mt_fm_remove(struct platform_device *pdev)
 {
@@ -1709,12 +1709,12 @@ static int mt_fm_remove(struct platform_device *pdev)
 
 	struct fm *fm = g_fm_struct;
 	if(fm)
-	{    
+	{
 		fm_destroy(fm);
 		fm = NULL;
 	}
 
-	return 0; 
+	return 0;
 }
 
 
@@ -1724,14 +1724,14 @@ static struct platform_driver mt_fm_dev_drv =
 	.remove  = mt_fm_remove,
 	.driver = {
 		.name   = FM_NAME,
-		.owner  = THIS_MODULE,    
+		.owner  = THIS_MODULE,
 	}
 };
 
 #if defined(MTK_MT6515)
 static struct platform_device mt_fm_device = {
 	.name   = FM_NAME,
-	.id = -1, 
+	.id = -1,
 };
 #endif
 

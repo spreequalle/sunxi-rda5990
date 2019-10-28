@@ -45,5 +45,3 @@ obj-$(CONFIG_MTK_COMBO_FM) += RDA5990_FM_drv_gpio.o
 
 endif
 endif
-
-

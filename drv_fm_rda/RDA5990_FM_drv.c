@@ -20,10 +20,10 @@
 // if need debug, define FMDEBUG
 //#define FMDEBUG
 
-// if your platform is MT6515/6575, define MTK_MT6515 
+// if your platform is MT6515/6575, define MTK_MT6515
 #define MTK_MT6515
 
-// if your platform is MT6515/6575 and MTK FM is MT6626, define MT6626 
+// if your platform is MT6515/6575 and MTK FM is MT6626, define MT6626
 //#define MT6626
 
 #define FM_ALERT(f, s...) \
@@ -89,7 +89,7 @@ typedef struct
 {
 	uint8_t		address;
 	uint16_t	value;
-}RDA_FM_REG_T;   
+}RDA_FM_REG_T;
 
 typedef struct
 {
@@ -229,7 +229,7 @@ static RDA_RADIO_WORK_E RDA_RADIO_WorkType = FM_RECEIVER;
 
 #if 1
 static uint16_t RDA5802N_initialization_reg[]={
-	0xC005, //02h 
+	0xC005, //02h
 	0x0000,
 	0x0400,
 	0xC6ED, //0x86AD, //05h
@@ -246,17 +246,17 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x0000,  //0x10h
 	0x0019,
 	0x2A11,
-	0xB042,  
-	0x2A11,  
-	0xB831,  //0x15h 
+	0xB042,
+	0x2A11,
+	0xB831,  //0x15h
 	0xC000,
 	0x2A91,
 	0x9400,
 	0x00A8,
 	0xc400,  //0x1ah
-	0xF7CF,  //Ã·∏ﬂ‘∂∂À‘Î…˘“÷÷∆  
-	0x2414, //0x2ADC,  //0x1ch Ã·…˝VIO VDD÷Æº‰—π≤Ó“˝∆µƒ≤ª¡º
-	0x806F, 
+	0xF7CF,  //ÊèêÈ´òËøúÁ´ØÂô™Â£∞ÊäëÂà∂
+	0x2414, //0x2ADC,  //0x1ch ÊèêÂçáVIO VDD‰πãÈó¥ÂéãÂ∑ÆÂºïËµ∑ÁöÑ‰∏çËâØ
+	0x806F,
 	0x4608,
 	0x0086,
 	0x0661, //0x20H
@@ -283,11 +283,11 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x0000,
 	0x0000,
 	0x0000,  //0x10h
-	0x0019,  
+	0x0019,
 	0x2a11,
 	0xa053,//0x80,0x53,
-	0x3e11,//0x22,0x11,	
-	0xfc7d,  //0x15h 
+	0x3e11,//0x22,0x11,
+	0xfc7d,  //0x15h
 	0xc000,
 	0x2a91,
 	0x9400,
@@ -299,7 +299,7 @@ static uint16_t RDA5802N_initialization_reg[]={
 	0x4608,
 	0x0086,
 	0x0661,  //0x20h
-	0x0000,  
+	0x0000,
 	0x109e,
 	0x2244,
 	0x0408,  //0x24
@@ -323,7 +323,7 @@ static RDA_FM_REG_T RDA5820NS_TX_initialization_reg[]={
 static RDA_FM_REG_T RDA5820NS_RX_initialization_reg[]={
 	{0x02, 0x0002}, //Soft reset
 	{0xFF, 100},    // wait
-	{0x02, 0xC001},  //Power Up 
+	{0x02, 0xC001},  //Power Up
 	{0x05, 0x888F},  //LNAP  0x884F --LNAN
 	{0x06, 0x6000},
 	{0x13, 0x80E1},
@@ -482,7 +482,7 @@ static int RDAFM_clear_hmute(struct i2c_client *client)
 	ret = RDAFM_read(client, 0x02, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_clear_hmute  read register failed!\n"); 
+		FM_ALERT("RDAFM_clear_hmute  read register failed!\n");
 		return -1;
 	}
 
@@ -492,7 +492,7 @@ static int RDAFM_clear_hmute(struct i2c_client *client)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_clear_hmute  write register failed!\n"); 
+		FM_ALERT("RDAFM_clear_hmute  write register failed!\n");
 		return -1;
 	}
 
@@ -522,7 +522,7 @@ static int RDAFM_enable_hmute(struct i2c_client *client)
 	ret = RDAFM_read(client, 0x02, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_enable_hmute  read register failed!\n"); 
+		FM_ALERT("RDAFM_enable_hmute  read register failed!\n");
 		return -1;
 	}
 
@@ -532,7 +532,7 @@ static int RDAFM_enable_hmute(struct i2c_client *client)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_enable_hmute  write register failed!\n"); 
+		FM_ALERT("RDAFM_enable_hmute  write register failed!\n");
 		return -1;
 	}
 
@@ -583,7 +583,7 @@ static int RDAFM_SetStereo(struct i2c_client *client, uint8_t b)
 	ret = RDAFM_read(client, 0x02, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetStereo  read register failed!\n"); 
+		FM_ALERT("RDAFM_SetStereo  read register failed!\n");
 		return -1;
 	}
 	if (b)
@@ -595,7 +595,7 @@ static int RDAFM_SetStereo(struct i2c_client *client, uint8_t b)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetStereo  write register failed!\n"); 
+		FM_ALERT("RDAFM_SetStereo  write register failed!\n");
 		return -1;
 	}
 
@@ -615,7 +615,7 @@ static int RDAFM_SetRSSI_Threshold(struct i2c_client *client, uint8_t RssiThresh
 	ret = RDAFM_read(client, 0x05, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetRSSI_Threshold  read register failed!\n"); 
+		FM_ALERT("RDAFM_SetRSSI_Threshold  read register failed!\n");
 		return -1;
 	}
 
@@ -626,7 +626,7 @@ static int RDAFM_SetRSSI_Threshold(struct i2c_client *client, uint8_t RssiThresh
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetRSSI_Threshold  write register failed!\n"); 
+		FM_ALERT("RDAFM_SetRSSI_Threshold  write register failed!\n");
 		return -1;
 	}
 
@@ -647,7 +647,7 @@ static int RDAFM_SetDe_Emphasis(struct i2c_client *client, uint8_t index)
 	ret = RDAFM_read(client, 0x04, &tRegValue);
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetRSSI_Threshold  read register failed!\n"); 
+		FM_ALERT("RDAFM_SetRSSI_Threshold  read register failed!\n");
 		return -1;
 	}
 
@@ -665,7 +665,7 @@ static int RDAFM_SetDe_Emphasis(struct i2c_client *client, uint8_t index)
 
 	if (ret < 0)
 	{
-		FM_ALERT("RDAFM_SetRSSI_Threshold  write register failed!\n"); 
+		FM_ALERT("RDAFM_SetRSSI_Threshold  write register failed!\n");
 		return -1;
 	}
 
@@ -678,7 +678,7 @@ static int RDAFM_SetDe_Emphasis(struct i2c_client *client, uint8_t index)
 
 static void RDAFM_em_test(struct i2c_client *client, uint16_t group_idx, uint16_t item_idx, uint32_t item_value)
 {
-	FM_ALERT("RDAFM_em_test  %d:%d:%d\n", group_idx, item_idx, item_value); 
+	FM_ALERT("RDAFM_em_test  %d:%d:%d\n", group_idx, item_idx, item_value);
 	switch (group_idx)
 	{
 		case mono:
@@ -700,13 +700,13 @@ static void RDAFM_em_test(struct i2c_client *client, uint16_t group_idx, uint16_
 			}
 			else
 			{
-				RDAFM_SetStereo(client, 0); //force mono	
+				RDAFM_SetStereo(client, 0); //force mono
 			}
 			break;
 		case RSSI_threshold:
 			item_value &= 0x7F;
 			RDAFM_SetRSSI_Threshold(client, item_value);
-			break;		    
+			break;
 		case Softmute_Enable:
 			if (item_idx)
 			{
@@ -720,7 +720,7 @@ static void RDAFM_em_test(struct i2c_client *client, uint16_t group_idx, uint16_
 		case De_emphasis:
 			if(item_idx >= 2) //0us
 			{
-				FM_ALERT("RDAFM not support De_emphasis 0\n");		
+				FM_ALERT("RDAFM not support De_emphasis 0\n");
 			}
 			else
 			{
@@ -733,16 +733,16 @@ static void RDAFM_em_test(struct i2c_client *client, uint16_t group_idx, uint16_
 			break;
 		default:
 			FM_ALERT("RDAFM not support this setting\n");
-			break;   
+			break;
 	}
 }
 
-static bool RDAFM_Scan(struct i2c_client *client, 
+static bool RDAFM_Scan(struct i2c_client *client,
 		uint16_t min_freq, uint16_t max_freq,
 		uint16_t *pFreq,
-		uint16_t *pScanTBL, 
-		uint16_t *ScanTBLsize, 
-		uint16_t scandir, 
+		uint16_t *pScanTBL,
+		uint16_t *ScanTBLsize,
+		uint16_t scandir,
 		uint16_t space)
 {
 	uint16_t tFreq, tRegValue = 0;
@@ -768,7 +768,7 @@ static bool RDAFM_Scan(struct i2c_client *client,
 	if(scandir == RDA599X_FM_SCAN_UP){ // now, only support scan up
 		tFreq = min_freq;
 	}else{ //scan down
-		tFreq = max_freq;//max_freq compare need or not   
+		tFreq = max_freq;//max_freq compare need or not
 	}
 
 	//mute FM
@@ -792,7 +792,7 @@ static bool RDAFM_Scan(struct i2c_client *client,
 		tRegValue = 0;
 		RDAFM_read(client, 0x03, &tRegValue);
 		tRegValue &= (~(0x03ff<<6)); //clear bit[15:6]
-		channel = tFreq - min_freq; 
+		channel = tFreq - min_freq;
 		tRegValue |= ((channel << 6) | (1 << 4)); //set bit[15:6] and bit[4]
 		ret = RDAFM_write(client, 0x03, tRegValue);
 		msleep(40);
@@ -867,8 +867,8 @@ static int fm_setup_cdev(struct fm *fm)
 	if (IS_ERR(fm->cls)) {
 		err = PTR_ERR(fm->cls);
 		FM_ALERT("class_create err:%d\n", err);
-		return err;            
-	}    
+		return err;
+	}
 	fm->dev = device_create(fm->cls, NULL, fm->dev_t, NULL, FM_NAME);
 
 	return 0;
@@ -1021,10 +1021,10 @@ static int fm_ops_ioctl(struct file *filp,
 				if (copy_from_user(&bmute, (void*)arg, sizeof(uint32_t)))
 				{
 					FM_DEBUG("copy_from_user mute failed!\n");
-					return -EFAULT;    
+					return -EFAULT;
 				}
 
-				FM_DEBUG("FM_IOCTL_MUTE:%d\n", bmute); 
+				FM_DEBUG("FM_IOCTL_MUTE:%d\n", bmute);
 				if (down_interruptible(&fm_ops_mutex))
 					return -EFAULT;
 
@@ -1095,7 +1095,7 @@ static int fm_ops_ioctl(struct file *filp,
 
 		case FM_IOCTL_GETCHIPID:
 			{
-				uint16_t chipid;            
+				uint16_t chipid;
 
 				if (down_interruptible(&fm_ops_mutex))
 					return -EFAULT;
@@ -1103,7 +1103,7 @@ static int fm_ops_ioctl(struct file *filp,
 				RDAFM_GetChipID(fm->i2c_client, &chipid);
 				//chipid = fm->chip_id;
 				chipid = 0x6620;
-				FM_DEBUG("FM_IOCTL_GETCHIPID:%04x\n", chipid);   
+				FM_DEBUG("FM_IOCTL_GETCHIPID:%04x\n", chipid);
 				up(&fm_ops_mutex);
 
 				if (copy_to_user((void*)arg, &chipid, sizeof(uint16_t)))
@@ -1205,10 +1205,10 @@ static loff_t fm_ops_lseek(struct file *filp, loff_t off, int whence)
 	if(whence == SEEK_END){
 		//fm_hwscan_stop(fm);
 		atomic_set(&scan_complete_flag, 0);
-	}else if(whence == SEEK_SET){  
+	}else if(whence == SEEK_SET){
 		//FM_EVENT_SEND(fm->rds_event, FM_RDS_DATA_READY);
-	}   
-	return off;    
+	}
+	return off;
 }
 
 static int fm_ops_open(struct inode *inode, struct file *filp)
@@ -1246,7 +1246,7 @@ static int fm_ops_release(struct inode *inode, struct file *filp)
 	fm->ref--;
 	if(fm->ref < 1) {
 		if(fm->powerup == true) {
-			fm_powerdown(fm);           
+			fm_powerdown(fm);
 		}
 	}
 
@@ -1562,7 +1562,7 @@ static int fm_seek(struct fm *fm, struct fm_seek_parm *parm)
 		fm->min_freq = 875;
 		fm->max_freq = 1080;
 	}
-	else if (parm->band == FM_BAND_JAPAN) 
+	else if (parm->band == FM_BAND_JAPAN)
 	{
 		val &= (~(1<<3));
 		val |= (1 << 2);
@@ -1652,7 +1652,7 @@ static int fm_seek(struct fm *fm, struct fm_seek_parm *parm)
 	RDAFM_clear_hmute(client);
 
 	if (falseStation == 0) // seek successfully
-	{    
+	{
 		parm->freq = tFreq;
 		FM_ALERT("fm_seek success, freq:%d\n", parm->freq);
 		parm->err = FM_SUCCESS;
@@ -1676,8 +1676,8 @@ static int  fm_scan(struct fm *fm, struct fm_scan_parm *parm)
 {
 	int ret = 0;
 	uint16_t tRegValue = 0;
-	uint16_t scandir = RDA599X_FM_SCAN_UP; //scandir À—À˜∑ΩœÚ
-	uint8_t space = 1; 
+	uint16_t scandir = RDA599X_FM_SCAN_UP; //scandir ÊêúÁ¥¢ÊñπÂêë
+	uint8_t space = 1;
 	struct i2c_client *client = fm->i2c_client;
 
 	if (!fm->powerup){
@@ -1838,7 +1838,7 @@ static int fm_tune(struct fm *fm, struct fm_tune_parm *parm)
 		fm->min_freq = 875;
 		fm->max_freq = 1080;
 	}
-	else if (parm->band == FM_BAND_JAPAN) 
+	else if (parm->band == FM_BAND_JAPAN)
 	{
 		val &= (~(1<<3));
 		val |= (1 << 2);
@@ -1973,19 +1973,19 @@ static int fm_i2c_detach_client(struct i2c_client *client)
 static int fm_i2c_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
 	int err = -1;
-	FM_DEBUG("fm_i2c_probe\n");    
+	FM_DEBUG("fm_i2c_probe\n");
 	//client->timing = 50;
 	//client->timing = 200;
 	if ((err = fm_init(client)))
 	{
 		FM_ALERT("fm_init ERR:%d\n", err);
 		goto ERR_EXIT;
-	}   
+	}
 
-	return 0;   
+	return 0;
 
 ERR_EXIT:
-	return err;    
+	return err;
 }
 
 static int fm_i2c_detect(struct i2c_client *client, int kind, struct i2c_board_info *info)
@@ -2002,7 +2002,7 @@ static int fm_i2c_remove(struct i2c_client *client)
 
 	FM_DEBUG("fm_i2c_remove\n");
 	if(fm)
-	{    
+	{
 		fm_destroy(fm);
 		fm = NULL;
 	}
@@ -2015,14 +2015,14 @@ int  i2c_static_add_device(struct i2c_board_info *info)
 {
 	struct i2c_adapter *adapter;
 	struct i2c_client  *client;
-	int    ret; 
+	int    ret;
 
 	adapter = i2c_get_adapter(RDAFM_I2C_PORT);
 	if (!adapter) {
 		FM_DEBUG("%s: can't get i2c adapter\n", __func__);
 		ret = -ENODEV;
 		goto i2c_err;
-	}    
+	}
 
 	client = i2c_new_device(adapter, info);
 	if (!client) {
@@ -2030,7 +2030,7 @@ int  i2c_static_add_device(struct i2c_board_info *info)
 				__FUNCTION__, (unsigned int)info->addr);
 		ret = -ENODEV;
 		goto i2c_err;
-	}    
+	}
 
 	i2c_put_adapter(adapter);
 
@@ -2057,16 +2057,16 @@ static int mt_fm_probe(struct platform_device *pdev)
 		FM_ALERT("i2c err\n");
 	}
 
-	return err;   
-} 
+	return err;
+}
 
 static int mt_fm_remove(struct platform_device *pdev)
 {
 	FM_ALERT("mt_fm_remove\n");
 	i2c_unregister_device(g_fm_struct->i2c_client);
-	i2c_del_driver(&RDAFM_driver); 
+	i2c_del_driver(&RDAFM_driver);
 
-	return 0; 
+	return 0;
 }
 
 
@@ -2074,20 +2074,20 @@ static struct platform_driver mt_fm_dev_drv =
 {
 	.probe   = mt_fm_probe,
 	.remove  = mt_fm_remove,
-#if 0//def CONFIG_PM //Not need now   
+#if 0//def CONFIG_PM //Not need now
 	.suspend = mt_fm_suspend,
 	.resume  = mt_fm_resume,
-#endif    
+#endif
 	.driver = {
 		.name   = FM_NAME,
-		.owner  = THIS_MODULE,    
+		.owner  = THIS_MODULE,
 	}
 };
 
 #if defined(MTK_MT6515)
 static struct platform_device mt_fm_device = {
 	.name   = FM_NAME,
-	.id = -1, 
+	.id = -1,
 };
 #endif
 
@@ -2138,5 +2138,3 @@ module_exit(mt_fm_exit);
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("MediaTek FM Driver");
 MODULE_AUTHOR("William Chung <William.Chung@MediaTek.com>");
-
-

@@ -1,7 +1,7 @@
 /**
   * This file contains definition for IOCTL call.
   */
-#include "rda5890_defs.h"  
+#include "rda5890_defs.h"
 #ifndef	_RDA5890_WEXT_H_
 #define	_RDA5890_WEXT_H_
 

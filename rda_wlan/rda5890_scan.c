@@ -27,8 +27,8 @@ typedef enum {ISSID         = 0,   /* Service Set Identifier   */
               IIBPARMS      = 6,   /* IBSS parameter set       */
               ICTEXT        = 16,  /* Challenge Text           */
               IERPINFO      = 42,  /* ERP Information          */
-              IEXSUPRATES   = 50,   /* Extended Supported Rates */            
-              IWAPI               =68          
+              IEXSUPRATES   = 50,   /* Extended Supported Rates */
+              IWAPI         = 68
 } ELEMENTID_T;
 
 /* Capability Information field bit assignments  */
@@ -137,7 +137,7 @@ void get_BSSID(unsigned char* data, unsigned char* bssid)
 extern int is_same_network(struct bss_descriptor *src,
                   struct bss_descriptor *dst);
 extern void clear_bss_descriptor(struct bss_descriptor *bss);
-void rda5890_network_information(struct rda5890_private *priv, 
+void rda5890_network_information(struct rda5890_private *priv,
 		char *info, unsigned short info_len)
 {
     union iwreq_data wrqu;
@@ -155,7 +155,7 @@ void rda5890_network_information(struct rda5890_private *priv,
 
     if(!priv->scan_running)
         goto done;
-    
+
     if((msa_len - 1 + 9 ) != info_len)
         {
             RDA5890_ERRP("rda5890_network_information verify lengh feild failed \n");
@@ -168,7 +168,7 @@ void rda5890_network_information(struct rda5890_private *priv,
     get_BSSID(msa, bss->bssid);
 
     end = msa + msa_len;
-    
+
     //mac head
     pos = msa + 24;
     //time stamp
@@ -188,7 +188,7 @@ void rda5890_network_information(struct rda5890_private *priv,
   /* process variable IE */
 	while (pos + 2 <= end) {
 		if (pos + pos[1] > end) {
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("process_bss: error in processing IE, "
 				     "bytes left < IE length\n");
 #endif
@@ -199,7 +199,7 @@ void rda5890_network_information(struct rda5890_private *priv,
 		case WLAN_EID_SSID:
 			bss->ssid_len = min_t(int, IEEE80211_MAX_SSID_LEN, pos[1]);
 			memcpy(bss->ssid, pos + 2, bss->ssid_len);
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got SSID IE: '%s', len %u %d\n",
 			             bss->ssid,
 			             bss->ssid_len, pos[1]);
@@ -210,38 +210,38 @@ void rda5890_network_information(struct rda5890_private *priv,
 			n_basic_rates = min_t(uint8_t, MAX_RATES, pos[1]);
 			memcpy(bss->rates, pos + 2, n_basic_rates);
 			got_basic_rates = 1;
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got RATES IE\n");
 #endif
 			break;
 
 		case WLAN_EID_FH_PARAMS:
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got FH IE\n");
 #endif
 			break;
 
 		case WLAN_EID_DS_PARAMS:
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got DS IE\n");
 #endif
 			break;
 
 		case WLAN_EID_CF_PARAMS:
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got CF IE\n");
 #endif
 			break;
 
 		case WLAN_EID_IBSS_PARAMS:
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got IBSS IE\n");
 #endif
 			break;
 
 		case WLAN_EID_COUNTRY:
 			pcountryinfo = (struct ieee_ie_country_info_set *) pos;
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got COUNTRY IE\n");
 #endif
 			break;
@@ -251,11 +251,11 @@ void rda5890_network_information(struct rda5890_private *priv,
 			 * already found. Data rate IE should come before
 			 * extended supported rate IE
 			 */
-#ifdef SCAN_RESULT_DEBUG			 
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got RATESEX IE\n");
 #endif
 			if (!got_basic_rates) {
-#ifdef SCAN_RESULT_DEBUG                
+#ifdef SCAN_RESULT_DEBUG
 				RDA5890_DBGP("... but ignoring it\n");
 #endif
 				break;
@@ -275,12 +275,12 @@ void rda5890_network_information(struct rda5890_private *priv,
 			    pos[4] == 0xf2 && pos[5] == 0x01) {
 				bss->wpa_ie_len = min(pos[1] + 2, MAX_WPA_IE_LEN);
 				memcpy(bss->wpa_ie, pos, bss->wpa_ie_len);
-#ifdef SCAN_RESULT_DEBUG                
+#ifdef SCAN_RESULT_DEBUG
 				RDA5890_DBGP("got WPA IE \n");
 #endif
 			}
 			else {
-#ifdef SCAN_RESULT_DEBUG                
+#ifdef SCAN_RESULT_DEBUG
 				RDA5890_DBGP("got generic IE: %02x:%02x:%02x:%02x, len %d\n",
 					pos[2], pos[3],
 					pos[4], pos[5],
@@ -290,7 +290,7 @@ void rda5890_network_information(struct rda5890_private *priv,
 			break;
 
 		case WLAN_EID_RSN:
-#ifdef SCAN_RESULT_DEBUG            
+#ifdef SCAN_RESULT_DEBUG
 			RDA5890_DBGP("got RSN IE\n");
 #endif
 			bss->rsn_ie_len = min(pos[1] + 2, MAX_WPA_IE_LEN);
@@ -298,7 +298,7 @@ void rda5890_network_information(struct rda5890_private *priv,
 			break;
 
             case IWAPI:
-#ifdef SCAN_RESULT_DEBUG                
+#ifdef SCAN_RESULT_DEBUG
                     RDA5890_DBGP("got WAPI IE\n");
 #endif
             bss->wapi_ie_len = min(pos[1] + 2, 100);
@@ -311,7 +311,7 @@ void rda5890_network_information(struct rda5890_private *priv,
 
 		pos += pos[1] + 2;
 	}
-    
+
       bss->last_scanned = jiffies;
 
     /* add scaned bss into list */
@@ -332,27 +332,27 @@ void rda5890_network_information(struct rda5890_private *priv,
 		}
 
 		if (found) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND SAME %s, update\n", found->ssid);
 			/* found, clear it */
 			clear_bss_descriptor(found);
 		} else if (!list_empty(&priv->network_free_list)) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND NEW %s, add\n", bss->ssid);
 			/* Pull one from the free list */
 			found = list_entry(priv->network_free_list.next,
 					   struct bss_descriptor, list);
 			list_move_tail(&found->list, &priv->network_list);
 		} else if (oldest) {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
-				"FOUND NEW %s, no space, replace oldest %s\n", 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
+				"FOUND NEW %s, no space, replace oldest %s\n",
 				bss->ssid, oldest->ssid);
 			/* If there are no more slots, expire the oldest */
 			found = oldest;
 			clear_bss_descriptor(found);
 			list_move_tail(&found->list, &priv->network_list);
 		} else {
-			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE, 
+			RDA5890_DBGLAP(RDA5890_DA_WEXT, RDA5890_DL_TRACE,
 				"FOUND NEW but no space to store\n");
 		}
 
@@ -361,11 +361,8 @@ void rda5890_network_information(struct rda5890_private *priv,
 	}
 
 done:
-#ifdef SCAN_RESULT_DEBUG    
+#ifdef SCAN_RESULT_DEBUG
 	RDA5890_DBGP("rda5890_network_information ret %d \n", ret);
 #endif
     return;
 }
-
-
-

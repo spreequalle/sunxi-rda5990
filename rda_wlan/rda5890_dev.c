@@ -34,7 +34,7 @@ int rda5890_init_pm(struct rda5890_private *priv)
 #ifdef WIFI_POWER_MANAGER
     int ret = 0;
     struct if_sdio_card  *card =  (struct if_sdio_card  *)priv->card;
-    
+
 #ifdef WIFI_TEST_MODE
     if(rda_5990_wifi_in_test_mode())
         return 0;
@@ -72,15 +72,15 @@ err:
 int rda5890_disable_self_cts(struct rda5890_private *priv)
 {
     int ret = 0;
-    
+
 	RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE,
 	"Set rda5890_disable_self_cts 0x%02x\n", 0);
-    
+
 	ret = rda5890_generic_set_uchar(priv, WID_PTA_MODE, 0);
         if(ret < 0)
             goto err;
 	return 0;
-  
+
 err:
     return ret;
 }
@@ -91,13 +91,13 @@ int rda5890_disable_block_bt(struct rda5890_private *priv)
 
     RDA5890_DBGLAP(RDA5890_DA_WID, RDA5890_DL_TRACE,
 	"Set rda5890_disable_block_bt 0x%02x\n", 0);
-    
+
 	ret = rda5890_generic_set_uchar(priv, WID_PTA_BLOCK_BT, 0);
         if(ret < 0)
             goto err;
-        
+
 	return 0;
-  
+
 err:
     return ret;
 }
@@ -200,7 +200,7 @@ static int rda5890_set_mac_address(struct net_device *dev, void *addr)
 	if (ret) {
 		goto done;
 	}
-	memcpy(priv->dev->dev_addr, phwaddr->sa_data, ETH_ALEN); 
+	memcpy(priv->dev->dev_addr, phwaddr->sa_data, ETH_ALEN);
 
 done:
 	RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_DEBUG,
@@ -256,16 +256,16 @@ static int rda5890_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 			"IOCTL_RDA5890_GET_MAGIC\n");
 		value = RDA5890_MAGIC;
 		if (copy_to_user(rq->ifr_data, &value, sizeof(value)))
-			ret = -EFAULT; 
-		break;  
+			ret = -EFAULT;
+		break;
 	case IOCTL_RDA5890_GET_DRIVER_VER:
 		RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_DEBUG,
 			"IOCTL_RDA5890_GET_DRIVER_VER\n");
-		value = RDA5890_SDIOWIFI_VER_MAJ << 16 | 
+		value = RDA5890_SDIOWIFI_VER_MAJ << 16 |
 			RDA5890_SDIOWIFI_VER_MIN << 8 |
 			RDA5890_SDIOWIFI_VER_BLD;
 		if (copy_to_user(rq->ifr_data, &value, sizeof(value)))
-			ret = -EFAULT; 
+			ret = -EFAULT;
 		break;
 	case IOCTL_RDA5890_MAC_GET_FW_VER:
 		RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_DEBUG,
@@ -274,7 +274,7 @@ static int rda5890_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 		if (ret)
 			break;
 		if (copy_to_user(rq->ifr_data, &value, sizeof(value)))
-			ret = -EFAULT; 
+			ret = -EFAULT;
 		break;
 	case IOCTL_RDA5890_MAC_WID:
 		RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_DEBUG,
@@ -307,7 +307,7 @@ static int rda5890_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 		out_buf[2] = (char)(out_len_ret&0x00FF);
 		out_buf[3] = (char)((out_len_ret&0xFF00) >> 8);
 		if (copy_to_user(rq->ifr_data, out_buf, 4 + out_len_ret))
-			ret = -EFAULT; 
+			ret = -EFAULT;
 		break;
 	case IOCTL_RDA5890_SET_WAPI_ASSOC_IE:
 		if(copy_from_user(in_buf, rq->ifr_data, 100)) {
@@ -322,27 +322,27 @@ static int rda5890_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 	case IOCTL_RDA5890_GET_WAPI_ASSOC_IE:
 		rda5890_generic_get_str(priv, WID_WAPI_ASSOC_IE, out_buf, 100);
 		if (copy_to_user(rq->ifr_data, out_buf, 100))
-		ret = -EFAULT; 
+		ret = -EFAULT;
 		break;
 	default:
 		RDA5890_ERRP("unknown cmd 0x%x\n", cmd);
-		ret = -EFAULT; 
+		ret = -EFAULT;
 		break;
 	}
 
 	RDA5890_DBGLAP(RDA5890_DA_ETHER, RDA5890_DL_DEBUG,
 		"%s <<<\n", __func__);
 	return ret;
-} 
+}
 
 static int rda5890_init_adapter(struct rda5890_private *priv)
 {
 	int ret = 0;
 	size_t bufsize;
 	int i;
-    
+
 	mutex_init(&priv->wid_lock);
-#ifdef WIFI_POWER_MANAGER    
+#ifdef WIFI_POWER_MANAGER
 	atomic_set(&priv->sleep_flag, 0);
 #endif
 	priv->wid_pending = 0;
@@ -516,19 +516,19 @@ int rda5890_start_card(struct rda5890_private *priv)
 
         mac_addr[3] = 0x00;
         mac_addr[4] = 0xc0;
-        mac_addr[5] = 0x53;	
+        mac_addr[5] = 0x53;
 #endif
     	ret = rda5890_set_mac_addr(priv, mac_addr);
-    	if (ret) 
+    	if (ret)
         {
             goto done;
-        }        
+        }
 
     	ret = rda5890_get_mac_addr(priv, mac_addr);
     	if (ret) {
     		goto done;
     	}
-    	memcpy(priv->dev->dev_addr, mac_addr, ETH_ALEN); 
+    	memcpy(priv->dev->dev_addr, mac_addr, ETH_ALEN);
 
 #ifdef WIFI_TEST_MODE
     }
@@ -538,14 +538,13 @@ int rda5890_start_card(struct rda5890_private *priv)
 		RDA5890_ERRP("register_netdev failed\n");
 		goto done;
 	}
-    
+
 #ifdef WIFI_TEST_MODE
     if(!rda_5990_wifi_in_test_mode())
     {
 #endif
 
         rda5890_set_preamble(priv, G_AUTO_PREAMBLE);
-        
     	rda5890_indicate_disconnected(priv);
 #ifdef WIFI_TEST_MODE
     }
@@ -581,7 +580,7 @@ void rda5890_shedule_timeout(int msecs)
     while(timeout)
     {
         timeout = schedule_timeout(timeout);
-        
+
         if(time_after(jiffies, expires))
             break;
     }

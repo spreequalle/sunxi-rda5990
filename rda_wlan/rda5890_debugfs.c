@@ -330,7 +330,7 @@ void rda5890_sdio_test_card_to_host(char *buf, unsigned short len)
 		cmd_iter = (int)(*(volatile unsigned long *)(buf + 8));
 		cmd_len = (int)(*(volatile unsigned long *)(buf + 12));
 		//RDA5890_DBGLAP(RDA5890_DA_SDIO, RDA5890_DL_TRACE,
-		//		"SDIO TEST CMD: cmd = %d, iter = %d, len = %d\n", 
+		//		"SDIO TEST CMD: cmd = %d, iter = %d, len = %d\n",
 		//		cmd, cmd_iter, cmd_len);
 		switch (cmd) {
 		case SDIO_TEST_CMD_TYPE_H2C_STATUS:
@@ -373,14 +373,14 @@ void rda5890_sdio_test_card_to_host(char *buf, unsigned short len)
 	for (i=0;i<len;i++) {
 		if (recv_pattern == 0) {
 			if (buf[i] != (char)(i)) {
-				RDA5890_ERRP("data[%d] error, 0x%02x, should be 0x%02x, len = %d\n", 
+				RDA5890_ERRP("data[%d] error, 0x%02x, should be 0x%02x, len = %d\n",
 					i, buf[i], (char)(i), len);
 				break;
 			}
 		}
 		else {
 			if (buf[i] != (char)(len - i - 1)) {
-				RDA5890_ERRP("data[%d] error, 0x%02x, should be 0x%02x, len = %d\n", 
+				RDA5890_ERRP("data[%d] error, 0x%02x, should be 0x%02x, len = %d\n",
 					i, buf[i], (char)(len - i - 1), len);
 				break;
 			}
@@ -590,4 +590,3 @@ void rda5890_debugfs_remove_one(struct rda5890_private *priv)
 		debugfs_remove(priv->debugfs_files[i]);
 	debugfs_remove(priv->debugfs_dir);
 }
-

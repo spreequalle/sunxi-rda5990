@@ -109,7 +109,7 @@ struct bss_descriptor {
 	u8 mode;
 
 	/* zero-terminated array of supported data rates */
-	u8 rates[MAX_RATES + 1];    
+	u8 rates[MAX_RATES + 1];
 	u8 wpa_ie[MAX_WPA_IE_LEN];
 	size_t wpa_ie_len;
 	u8 rsn_ie[MAX_WPA_IE_LEN];
@@ -153,12 +153,12 @@ struct rda5890_private {
 	/** current ssid/bssid related parameters and status */
 	int connect_status;
 	struct rda5890_bss_descriptor curbssparams;
-	struct iw_statistics wstats; 
+	struct iw_statistics wstats;
 
 	/** association flags */
 	unsigned char assoc_ssid[IW_ESSID_MAX_SIZE + 1];
     unsigned char assoc_bssid[6];
-	unsigned char assoc_ssid_len; 
+	unsigned char assoc_ssid_len;
 #define ASSOC_FLAG_SSID			1
 #define ASSOC_FLAG_CHANNEL		2
 #define ASSOC_FLAG_BAND			3
@@ -198,7 +198,7 @@ struct rda5890_private {
     struct delayed_work   wlan_connect_work;
 
 	/** Hardware access */
-	int (*hw_host_to_card) (struct rda5890_private *priv, u8 *payload, u16 nb, 
+	int (*hw_host_to_card) (struct rda5890_private *priv, u8 *payload, u16 nb,
 	                            unsigned char packet_type);
 
 	/** Scan results list */
@@ -224,7 +224,7 @@ struct rda5890_private {
 
 	u8 is_wapi;
     	/** sleep/awake flag */
-#ifdef WIFI_POWER_MANAGER        
+#ifdef WIFI_POWER_MANAGER
 	atomic_t sleep_flag;
 #endif
     u8  first_init;

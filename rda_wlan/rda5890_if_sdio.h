@@ -32,7 +32,7 @@ struct if_sdio_card {
         spinlock_t              lock;
         struct if_sdio_packet   *packets;
         struct work_struct      packet_worker;
-        
+
         struct workqueue_struct *work_thread;
         atomic_t wid_complete_flag;
 #ifdef WIFI_POWER_MANAGER

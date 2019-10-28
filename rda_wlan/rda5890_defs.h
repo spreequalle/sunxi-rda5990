@@ -7,7 +7,7 @@
 #define RDA5890_SDIOWIFI_VER_MIN     3
 #define RDA5890_SDIOWIFI_VER_BLD     1
 
-#define WIFI_POWER_MANAGER //if need wifi sleep for power save should open this 
+#define WIFI_POWER_MANAGER //if need wifi sleep for power save should open this
 
 
 #define WIFI_UNLOCK_SYSTEM
@@ -22,7 +22,7 @@ extern int rda5890_dbg_level;
 extern int rda5890_dbg_area;
 
 typedef enum {
-	RDA5890_DL_ALL   = 0, 
+	RDA5890_DL_ALL   = 0,
 	RDA5890_DL_CRIT  = 1,
 	RDA5890_DL_TRACE = 2,
 	RDA5890_DL_NORM  = 3,
@@ -44,7 +44,7 @@ typedef enum {
 #define DEBUG
 #endif
 
-#ifdef DEBUG 
+#ifdef DEBUG
 #define RDA5890_DBGLA(area, lvl)                                             \
 	(((lvl)<=rda5890_dbg_level) && ((area)&rda5890_dbg_area))
 #define RDA5890_DBGLAP(area,lvl, x...)                                       \
@@ -58,8 +58,8 @@ typedef enum {
 	}while(0)
 #else
 #define RDA5890_DBGLA(area, lvl)    0
-#define RDA5890_DBGLAP(area,lvl, x...)  do {} while (0) 
-#define RDA5890_DBGP(x...)  do {} while (0) 
+#define RDA5890_DBGLAP(area,lvl, x...)  do {} while (0)
+#define RDA5890_DBGP(x...)  do {} while (0)
 #endif
 
 #define RDA5890_ERRP(fmt, args...)                                          \
@@ -68,4 +68,3 @@ typedef enum {
 	}while(0)
 
 #endif
-
